@@ -13,7 +13,7 @@ class Milestone extends Model
      * @var array
      */
     protected $fillable = [
-        'educator_id', 'child_id', 'age_group', 'developmental_area', 'observation', 'outcome_id', 'comments', 'date_tracked', 'hidden', 'date_created', 'date_modified'
+        'educator_id', 'child_id', 'age_group', 'developmental_area', 'observation', 'outcome_id', 'comments', 'date_tracked', 'published', 'deleted', 'date_created', 'date_modified'
     ];
 
     /**

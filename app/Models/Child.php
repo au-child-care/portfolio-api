@@ -13,7 +13,7 @@ class Child extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'nickname', 'birthday', 'level', 'active', 'hidden', 'last_activity', 'date_created', 'date_modified'
+        'first_name', 'last_name', 'nickname', 'birthday', 'level', 'active', 'deleted', 'last_activity', 'date_created', 'date_modified'
     ];
 
     /**

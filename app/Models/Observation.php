@@ -13,7 +13,7 @@ class Observation extends Model
      * @var array
      */
     protected $fillable = [
-        'educator_id', 'child_id', 'observation', 'outcome_id', 'date_tracked', 'hidden', 'date_created', 'date_modified'
+        'educator_id', 'child_id', 'observation', 'outcome_id', 'date_tracked', 'published', 'deleted', 'date_created', 'date_modified'
     ];
 
     /**

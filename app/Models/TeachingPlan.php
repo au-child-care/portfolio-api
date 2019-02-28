@@ -13,7 +13,7 @@ class TeachingPlan extends Model
      * @var array
      */
     protected $fillable = [
-        'educator_id', 'child_id', 'details', 'target_outcome_id', 'target_date', 'hidden', 'date_created', 'date_modified'
+        'educator_id', 'child_id', 'details', 'target_outcome_id', 'target_date', 'published', 'deleted', 'date_created', 'date_modified'
     ];
 
     /**
