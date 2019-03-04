@@ -22,4 +22,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('administrator', ['uses' => 'AdministratorController@create']);  
     $router->delete('administrator/{id}', ['uses' => 'AdministratorController@delete']);  
     $router->put('administrator/{id}', ['uses' => 'AdministratorController@update']);
+
+    // Child routes
+    $router->get('child',  ['uses' => 'ChildController@getAll']); 
+    $router->get('child/{id}', ['uses' => 'ChildController@get']);  
+    $router->post('child', ['uses' => 'ChildController@create']);  
+    $router->delete('child/{id}', ['uses' => 'ChildController@delete']);  
+    $router->put('child/{id}', ['uses' => 'ChildController@update']);
   });
