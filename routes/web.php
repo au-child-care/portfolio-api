@@ -16,5 +16,10 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
+    // Administrator routes
     $router->get('administrator',  ['uses' => 'AdministratorController@getAll']); 
+    $router->get('administrator/{id}', ['uses' => 'AdministratorController@get']);  
+    $router->post('administrator', ['uses' => 'AdministratorController@create']);  
+    $router->delete('administrator/{id}', ['uses' => 'AdministratorController@delete']);  
+    $router->put('administrator/{id}', ['uses' => 'AdministratorController@update']);
   });
