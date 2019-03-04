@@ -43,4 +43,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('educatorassignment', ['uses' => 'EducatorAssignmentController@create']);  
     $router->delete('educatorassignment/{id}', ['uses' => 'EducatorAssignmentController@delete']);  
     $router->put('educatorassignment/{id}', ['uses' => 'EducatorAssignmentController@update']);
+
+    // Feedback routes
+    $router->get('feedback',  ['uses' => 'FeedbackController@getAll']); 
+    $router->get('feedback/{id}', ['uses' => 'FeedbackController@get']);  
+    $router->post('feedback', ['uses' => 'FeedbackController@create']);  
+    $router->delete('feedback/{id}', ['uses' => 'FeedbackController@delete']);  
+    $router->put('feedback/{id}', ['uses' => 'FeedbackController@update']);
   });
