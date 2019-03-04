@@ -29,4 +29,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('child', ['uses' => 'ChildController@create']);  
     $router->delete('child/{id}', ['uses' => 'ChildController@delete']);  
     $router->put('child/{id}', ['uses' => 'ChildController@update']);
+
+    // Educator routes
+    $router->get('educator',  ['uses' => 'EducatorController@getAll']); 
+    $router->get('educator/{id}', ['uses' => 'EducatorController@get']);  
+    $router->post('educator', ['uses' => 'EducatorController@create']);  
+    $router->delete('educator/{id}', ['uses' => 'EducatorController@delete']);  
+    $router->put('educator/{id}', ['uses' => 'EducatorController@update']);
   });
