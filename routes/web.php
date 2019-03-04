@@ -36,4 +36,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('educator', ['uses' => 'EducatorController@create']);  
     $router->delete('educator/{id}', ['uses' => 'EducatorController@delete']);  
     $router->put('educator/{id}', ['uses' => 'EducatorController@update']);
+
+    // Educator Assignment routes
+    $router->get('educatorassignment',  ['uses' => 'EducatorAssignmentController@getAll']); 
+    $router->get('educatorassignment/{id}', ['uses' => 'EducatorAssignmentController@get']);  
+    $router->post('educatorassignment', ['uses' => 'EducatorAssignmentController@create']);  
+    $router->delete('educatorassignment/{id}', ['uses' => 'EducatorAssignmentController@delete']);  
+    $router->put('educatorassignment/{id}', ['uses' => 'EducatorAssignmentController@update']);
   });
