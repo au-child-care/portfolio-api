@@ -50,4 +50,39 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('feedback', ['uses' => 'FeedbackController@create']);  
     $router->delete('feedback/{id}', ['uses' => 'FeedbackController@delete']);  
     $router->put('feedback/{id}', ['uses' => 'FeedbackController@update']);
+
+    // Milestone routes
+    $router->get('milestone',  ['uses' => 'MilestoneController@getAll']); 
+    $router->get('milestone/{id}', ['uses' => 'MilestoneController@get']);  
+    $router->post('milestone', ['uses' => 'MilestoneController@create']);  
+    $router->delete('milestone/{id}', ['uses' => 'MilestoneController@delete']);  
+    $router->put('milestone/{id}', ['uses' => 'MilestoneController@update']);
+
+    // Observation routes
+    $router->get('observation',  ['uses' => 'ObservationController@getAll']); 
+    $router->get('observation/{id}', ['uses' => 'ObservationController@get']);  
+    $router->post('observation', ['uses' => 'ObservationController@create']);  
+    $router->delete('observation/{id}', ['uses' => 'ObservationController@delete']);  
+    $router->put('observation/{id}', ['uses' => 'ObservationController@update']);
+
+    // Parent Guardian routes
+    $router->get('parentGuardian',  ['uses' => 'ParentGuardianController@getAll']); 
+    $router->get('parentGuardian/{id}', ['uses' => 'ParentGuardianController@get']);  
+    $router->post('parentGuardian', ['uses' => 'ParentGuardianController@create']);  
+    $router->delete('parentGuardian/{id}', ['uses' => 'ParentGuardianController@delete']);  
+    $router->put('parentGuardian/{id}', ['uses' => 'ParentGuardianController@update']);
+
+    // Parent Guardian Assignment routes
+    $router->get('parentGuardianAssignment',  ['uses' => 'ParentGuardianAssignmentController@getAll']); 
+    $router->get('parentGuardianAssignment/{id}', ['uses' => 'ParentGuardianAssignmentController@get']);  
+    $router->post('parentGuardianAssignment', ['uses' => 'ParentGuardianAssignmentController@create']);  
+    $router->delete('parentGuardianAssignment/{id}', ['uses' => 'ParentGuardianAssignmentController@delete']);  
+    $router->put('parentGuardianAssignment/{id}', ['uses' => 'ParentGuardianAssignmentController@update']);
+
+    // Teaching Plan routes
+    $router->get('teachingPlan',  ['uses' => 'TeachingPlanController@getAll']); 
+    $router->get('teachingPlan/{id}', ['uses' => 'TeachingPlanController@get']);  
+    $router->post('teachingPlan', ['uses' => 'TeachingPlanController@create']);  
+    $router->delete('teachingPlan/{id}', ['uses' => 'TeachingPlanController@delete']);  
+    $router->put('teachingPlan/{id}', ['uses' => 'TeachingPlanController@update']);
   });
