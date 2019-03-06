@@ -64,6 +64,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('observation', ['uses' => 'ObservationController@create']);  
     $router->delete('observation/{id}', ['uses' => 'ObservationController@delete']);  
     $router->put('observation/{id}', ['uses' => 'ObservationController@update']);
+    $router->post('observation/classify', ['uses' => 'ObservationController@Classify']);  
 
     // Parent Guardian routes
     $router->get('parentGuardian',  ['uses' => 'ParentGuardianController@getAll']); 
