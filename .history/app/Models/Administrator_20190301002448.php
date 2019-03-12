@@ -13,7 +13,7 @@ class Administrator extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'nickname', 'email', 'contact_number', 'password', 'active', 'deleted', 'date_created', 'date_modified'
+        'first_name', 'last_name', 'nickname', 'email', 'password', 'active', 'deleted', 'date_created', 'date_modified'
     ];
 
     /**
