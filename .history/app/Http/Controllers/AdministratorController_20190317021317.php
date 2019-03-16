@@ -39,12 +39,11 @@ class AdministratorController extends Controller
     function validateRequest(Request $request, bool $forCreate = true) {
         $this->validate($request, [
             'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email'
+            'last_name' => 'required'
         ]);
         if ($forCreate) {
             $this->validate($request, [
-                'email' => 'unique:administrators'
+                'email' => 'required|email|unique:administrators'
             ]);
         }
     }

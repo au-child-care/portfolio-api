@@ -19,7 +19,7 @@ class AdministratorController extends Controller
     }
 
     public function create(Request $request) {
-        $this->validateRequest($request);
+        $this->validateRequest($request, true);
         $administrator = Administrator::create($request->all());
         return response()->json($administrator, 201);
     }
@@ -36,15 +36,14 @@ class AdministratorController extends Controller
         return response('Deleted Successfully', 200);
     }
 
-    function validateRequest(Request $request, bool $forCreate = true) {
+    function validateRequest(Request $request, bool forCreate) {
         $this->validate($request, [
             'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email'
+            'last_name' => 'required'
         ]);
-        if ($forCreate) {
+        if (forCreate) {
             $this->validate($request, [
-                'email' => 'unique:administrators'
+                'email' => 'required|email|unique:administrators'
             ]);
         }
     }
