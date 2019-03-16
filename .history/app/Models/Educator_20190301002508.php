@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ParentGuardian extends Model
+class Educator extends Model
 {
 
     /**
@@ -13,7 +13,7 @@ class ParentGuardian extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'nickname', 'email', 'password', 'contact_number', 'type', 'active', 'deleted', 'date_created', 'date_modified'
+        'first_name', 'last_name', 'nickname', 'email', 'password', 'active', 'deleted', 'last_activity', 'date_created', 'date_modified'
     ];
 
     /**
@@ -21,5 +21,5 @@ class ParentGuardian extends Model
      *
      * @var array
      */
-    protected $hidden = [ ];
+    protected $hidden = [ 'password' ];
 }
