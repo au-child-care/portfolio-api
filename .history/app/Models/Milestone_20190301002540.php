@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EducatorAssignment extends Model
+class Milestone extends Model
 {
 
     /**
@@ -13,7 +13,7 @@ class EducatorAssignment extends Model
      * @var array
      */
     protected $fillable = [
-        'educator_id', 'child_id'
+        'educator_id', 'child_id', 'age_group', 'developmental_area', 'observation', 'outcome_id', 'comments', 'date_tracked', 'published', 'deleted', 'date_created', 'date_modified'
     ];
 
     /**
@@ -22,6 +22,4 @@ class EducatorAssignment extends Model
      * @var array
      */
     protected $hidden = [ ];
-
-    public $timestamps = false;
 }
