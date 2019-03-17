@@ -41,7 +41,7 @@ class ChildController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'birthday' => 'required',
-            'group' => 'required'
+            'level' => 'required'
         ]);
     }
 }

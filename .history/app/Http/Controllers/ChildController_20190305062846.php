@@ -8,9 +8,10 @@ use Illuminate\Http\Request;
 class ChildController extends Controller
 {
     public function getAll(Request $request) {
+        $active = $request['active'] ?? 1;
         $deleted = $request['deleted'] ?? 0;
         return response()->json(
-            Child::where(['deleted' => (int)$deleted])
+            Child::where(['active' => (int)$active, 'deleted' => (int)$deleted])
                 ->get());
     }
 
@@ -41,7 +42,7 @@ class ChildController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'birthday' => 'required',
-            'group' => 'required'
+            'level' => 'required'
         ]);
     }
 }
