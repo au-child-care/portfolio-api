@@ -8,9 +8,10 @@ use Illuminate\Http\Request;
 class EducatorController extends Controller
 {
     public function getAll(Request $request) {
+        $active = $request['active'] ?? 1;
         $deleted = $request['deleted'] ?? 0;
         return response()->json(
-            Educator::where(['deleted' => (int)$deleted])
+            Educator::where(['active' => (int)$active, 'deleted' => (int)$deleted])
                 ->get());
     }
 
@@ -25,7 +26,7 @@ class EducatorController extends Controller
     }
 
     public function update($id, Request $request) {
-        $this->validateRequest($request, false);
+        $this->validateRequest($request);
         $educator = Educator::findOrFail($id);
         $educator->update($request->all());
         return response()->json($educator, 200);
@@ -36,16 +37,11 @@ class EducatorController extends Controller
         return response('Deleted Successfully', 200);
     }
 
-    function validateRequest(Request $request, bool $forCreate = true) {
+    function validateRequest(Request $request) {
         $this->validate($request, [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email'
+            'email' => 'required|email|unique:administrators'
         ]);
-        if ($forCreate) {
-            $this->validate($request, [
-                'email' => 'unique:educators'
-            ]);
-        }
     }
 }

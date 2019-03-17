@@ -44,7 +44,7 @@ class EducatorController extends Controller
         ]);
         if ($forCreate) {
             $this->validate($request, [
-                'email' => 'unique:educators'
+                'email' => 'unique:administrators'
             ]);
         }
     }
