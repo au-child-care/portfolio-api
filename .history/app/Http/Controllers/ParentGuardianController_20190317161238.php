@@ -8,9 +8,10 @@ use Illuminate\Http\Request;
 class ParentGuardianController extends Controller
 {
     public function getAll(Request $request) {
+        $active = $request['active'] ?? 1;
         $deleted = $request['deleted'] ?? 0;
         return response()->json(
-            ParentGuardian::where(['deleted' => (int)$deleted])
+            ParentGuardian::where(['active' => (int)$active, 'deleted' => (int)$deleted])
                 ->get());
     }
 
