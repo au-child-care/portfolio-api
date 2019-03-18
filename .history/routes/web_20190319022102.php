@@ -40,7 +40,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     // Educator Assignment routes
     $router->get('educatorassignment/byChild/{id}',  ['uses' => 'EducatorAssignmentController@getByChild']);
     $router->get('educatorassignment/byEducator/{id}',  ['uses' => 'EducatorAssignmentController@getByEducator']); 
-    $router->post('educatorassignment/byEducator/{id}', ['uses' => 'EducatorAssignmentController@setByEducator']);
+    $router->post('educatorassignment', ['uses' => 'EducatorAssignmentController@set']);
 
     // Feedback routes
     $router->get('feedback',  ['uses' => 'FeedbackController@getAll']); 

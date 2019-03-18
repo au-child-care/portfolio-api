@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use App\Models\EducatorAssignment;
 use Illuminate\Http\Request;
 
@@ -20,10 +19,15 @@ class EducatorAssignmentController extends Controller
     }
 
     public function setByEducator(Request $request) {
-        EducatorAssignment::where(['educator_id' => (int)$request['id']])->delete();
-        foreach ($request->all() as $current) {
-            EducatorAssignment::create($current);
-        }
-        return response()->json('Educator - childred assignment was successfully set.', 200);
+        $this->validateRequest($request);
+        $educatorAssignment = EducatorAssignment::create($request->all());
+        return response()->json($educatorAssignment, 200);
+    }
+
+    function validateRequest(Request $request) {
+        $this->validate($request, [            
+            'educator_id' => 'required',
+            'child_id' => 'required'
+        ]);
     }
 }

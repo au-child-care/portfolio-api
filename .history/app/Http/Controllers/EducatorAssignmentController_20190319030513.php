@@ -10,17 +10,17 @@ class EducatorAssignmentController extends Controller
 {
     public function getByChild($id) {
         return response()->json(
-            EducatorAssignment::where(['child_id' => $id])
+            EducatorAssignment::where(['child_id' => $child_id])
                 ->get());
     }
-    public function getByEducator($id) {
+    public function getByEducator($educator_id) {
         return response()->json(
-            EducatorAssignment::where(['educator_id' => $id])
+            EducatorAssignment::where(['educator_id' => $child_id])
                 ->get());
     }
 
     public function setByEducator(Request $request) {
-        EducatorAssignment::where(['educator_id' => (int)$request['id']])->delete();
+        EducatorAssignment::where(['educator_id' => (int)$request['educator_id']])->delete();
         foreach ($request->all() as $current) {
             EducatorAssignment::create($current);
         }

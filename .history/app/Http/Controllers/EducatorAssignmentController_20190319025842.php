@@ -20,10 +20,12 @@ class EducatorAssignmentController extends Controller
     }
 
     public function setByEducator(Request $request) {
-        EducatorAssignment::where(['educator_id' => (int)$request['id']])->delete();
-        foreach ($request->all() as $current) {
-            EducatorAssignment::create($current);
-        }
-        return response()->json('Educator - childred assignment was successfully set.', 200);
+        $test = EducatorAssignment::where(['educator_id' => (int)$request['id']]);
+        //DB::table('educators_assignment')->where('educator_id', array($request['id']))->delete();
+        //foreach ($request->all() as $current) {
+        //    EducatorAssignment::create($current);
+        //}
+
+        return response()->json($request['id'], $test);
     }
 }
