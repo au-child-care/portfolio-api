@@ -69,7 +69,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     // Parent Guardian routes
     $router->get('parentGuardian',  ['uses' => 'ParentGuardianController@getAll']); 
     $router->get('parentGuardian/{id}', ['uses' => 'ParentGuardianController@get']);  
-    $router->get('parentGuardian/all/{ids}',  ['uses' => 'ParentGuardianController@getAllByIds']); 
     $router->post('parentGuardian', ['uses' => 'ParentGuardianController@create']);  
     $router->delete('parentGuardian/{id}', ['uses' => 'ParentGuardianController@delete']);  
     $router->put('parentGuardian/{id}', ['uses' => 'ParentGuardianController@update']);

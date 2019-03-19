@@ -19,7 +19,8 @@ class ParentGuardianController extends Controller
     }
 
     public function getAllByIds($ids) {
-        return response()->json(ParentGuardian::findMany(array_map('intval', explode(',', $ids))));
+        echo $ids;
+        return response()->json(ParentGuardian::findMany(array_map('intval', explode(',', $ids.',0'))));
     }
 
     public function create(Request $request) {
