@@ -78,6 +78,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('parentGuardianAssignment/byParentGuardian/{id}', ['uses' => 'ParentGuardianAssignmentController@setByParentGuardian']);
     $router->delete('parentGuardianAssignment/byParentGuardian/{id}', ['uses' => 'ParentGuardianAssignmentController@deleteByParentGuardian']);
 
+
     // Teaching Plan routes
     $router->get('teachingPlan',  ['uses' => 'TeachingPlanController@getAll']); 
     $router->get('teachingPlan/{id}', ['uses' => 'TeachingPlanController@get']);  
