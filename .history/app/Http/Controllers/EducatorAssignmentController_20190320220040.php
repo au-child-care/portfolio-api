@@ -19,7 +19,7 @@ class EducatorAssignmentController extends Controller
         $arrayResult = json_decode($encodedResult, true);
         $ids = array_column($arrayResult, 'educator_id');
         $educatorController = new EducatorController();
-        return $educatorController->getAllByIds(implode(',',$ids));
+        return response()->json($educatorController->getAllByIds(implode(',',$ids)));
     }
 
     public function getByEducator($id) {

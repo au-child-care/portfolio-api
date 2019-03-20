@@ -15,11 +15,10 @@ class EducatorAssignmentController extends Controller
     }
 
     public function getEducatorsByChild($id) {
-        $encodedResult  = json_encode(EducatorAssignment::where(['child_id' => $id])->get());
-        $arrayResult = json_decode($encodedResult, true);
-        $ids = array_column($arrayResult, 'educator_id');
-        $educatorController = new EducatorController();
-        return $educatorController->getAllByIds(implode(',',$ids));
+        $json  = json_encode(EducatorAssignment::where(['child_id' => $id])->get());
+$array = json_decode($json, true);
+        $ids = array_column((array)EducatorAssignment::where(['child_id' => $id])->get(), 'educator_id');
+        return response()->json($array);
     }
 
     public function getByEducator($id) {

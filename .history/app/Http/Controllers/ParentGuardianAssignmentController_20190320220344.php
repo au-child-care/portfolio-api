@@ -13,7 +13,7 @@ class ParentGuardianAssignmentController extends Controller
                 ->get());
     }
 
-    public function getParentsGuardiansByChild($id) {
+    public function getParentGuardianByChild($id) {
         $encodedResult  = json_encode(ParentGuardianAssignment::where(['child_id' => $id])->get());
         $arrayResult = json_decode($encodedResult, true);
         $ids = array_column($arrayResult, 'parentguardian_id');

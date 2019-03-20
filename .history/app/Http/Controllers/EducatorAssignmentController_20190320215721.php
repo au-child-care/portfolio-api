@@ -18,8 +18,7 @@ class EducatorAssignmentController extends Controller
         $encodedResult  = json_encode(EducatorAssignment::where(['child_id' => $id])->get());
         $arrayResult = json_decode($encodedResult, true);
         $ids = array_column($arrayResult, 'educator_id');
-        $educatorController = new EducatorController();
-        return $educatorController->getAllByIds(implode(',',$ids));
+        return response()->json($ids);
     }
 
     public function getByEducator($id) {
