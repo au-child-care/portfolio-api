@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 class MilestoneController extends Controller
 {
     public function getAll(Request $request) {
+        $published = $request['published'] ?? 1;
         $deleted = $request['deleted'] ?? 0;
         return response()->json(
-            Milestone::where(['deleted' => (int)$deleted])
-                ->orderBy('date_tracked', 'desc')
+            Milestone::where(['published' => (int)$published, 'deleted' => (int)$deleted])
                 ->get());
     }
 
