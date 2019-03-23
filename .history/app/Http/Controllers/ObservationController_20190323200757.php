@@ -11,10 +11,11 @@ class ObservationController extends Controller
     public function getAll(Request $request) {
         $deleted = $request['deleted'] ?? 0;
         return response()->json(
-            Observation::where(['deleted' => (int)$deleted], function($q) {
-                    $q->orderBy('date_tracked', 'desc');
-                })
-                ->get());
+            usort(Observation::where(['deleted' => (int)$deleted])
+                ->get()
+                ->toArray(), function($item1, $item2) {                    
+                    return $item2['date_tracked'] <=> $item1['date_tracked'];
+                });
     }
 
     public function get($id) {

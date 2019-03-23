@@ -9,11 +9,10 @@ use Illuminate\Http\Request;
 class ObservationController extends Controller
 {
     public function getAll(Request $request) {
+        $published = $request['published'] ?? 1;
         $deleted = $request['deleted'] ?? 0;
         return response()->json(
-            Observation::where(['deleted' => (int)$deleted], function($q) {
-                    $q->orderBy('date_tracked', 'desc');
-                })
+            Observation::where(['published' => (int)$published, 'deleted' => (int)$deleted])
                 ->get());
     }
 

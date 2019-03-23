@@ -12,7 +12,7 @@ class ObservationController extends Controller
         $deleted = $request['deleted'] ?? 0;
         return response()->json(
             Observation::where(['deleted' => (int)$deleted], function($q) {
-                    $q->orderBy('date_tracked', 'desc');
+                $q->orderBy('date_tracked', 'desc');
                 })
                 ->get());
     }
