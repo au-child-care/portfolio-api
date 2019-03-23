@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 class TeachingPlanController extends Controller
 {
     public function getAll(Request $request) {
+        $published = $request['published'] ?? 1;
         $deleted = $request['deleted'] ?? 0;
         return response()->json(
-            TeachingPlan::where(['deleted' => (int)$deleted])
-                ->orderBy('target_date', 'desc')
+            TeachingPlan::where(['published' => (int)$published, 'deleted' => (int)$deleted])
                 ->get());
     }
 
@@ -41,7 +41,6 @@ class TeachingPlanController extends Controller
         $this->validate($request, [
             'educator_id' => 'required',
             'child_id' => 'required',
-            'title' => 'title',
             'details' => 'required',
             'target_outcome_id' => 'required',
             'target_date' => 'required'
