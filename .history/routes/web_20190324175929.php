@@ -44,7 +44,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('educatorassignment/byEducator/{id}',  ['uses' => 'EducatorAssignmentController@getByEducator']); 
     $router->post('educatorassignment/byEducator/{id}', ['uses' => 'EducatorAssignmentController@setByEducator']);
     $router->delete('educatorassignment/byEducator/{id}', ['uses' => 'EducatorAssignmentController@deleteByEducator']);
-    $router->delete('educatorassignment/byChild/{id}', ['uses' => 'EducatorAssignmentController@deleteByChild']);
 
     // Feedback routes
     $router->get('feedback',  ['uses' => 'FeedbackController@getAll']); 
@@ -56,7 +55,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     // Milestone routes $router->get('educatorassignment/byChild/{id}',  ['uses' => 'EducatorAssignmentController@getByChild']);
     $router->get('milestone/byChild/{id}',  ['uses' => 'MilestoneController@getByChild']);
     $router->post('milestone/byChild/{id}', ['uses' => 'MilestoneController@setByChild']);
-
+    
     // Observation routes
     $router->get('observation',  ['uses' => 'ObservationController@getAll']); 
     $router->get('observation/{id}', ['uses' => 'ObservationController@get']);  
@@ -79,7 +78,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('parentGuardianAssignment/byParentGuardian/{id}',  ['uses' => 'ParentGuardianAssignmentController@getByParentGuardian']); 
     $router->post('parentGuardianAssignment/byParentGuardian/{id}', ['uses' => 'ParentGuardianAssignmentController@setByParentGuardian']);
     $router->delete('parentGuardianAssignment/byParentGuardian/{id}', ['uses' => 'ParentGuardianAssignmentController@deleteByParentGuardian']);
-    $router->delete('parentGuardianAssignment/byChild/{id}', ['uses' => 'ParentGuardianAssignmentController@deleteByChild']);
 
     // Teaching Plan routes
     $router->get('teachingPlan',  ['uses' => 'TeachingPlanController@getAll']); 

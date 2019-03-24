@@ -43,5 +43,4 @@ class ParentGuardianAssignmentController extends Controller
     public function deleteByChild($id) {
         ParentGuardianAssignment::where(['child_id' => $id])->delete();
         return response()->json('Parent / guardian - children assignment was successfully removed.', 200);
-    }
 }
