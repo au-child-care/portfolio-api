@@ -21,14 +21,19 @@ class TeachingPlanController extends Controller
 
     public function create(Request $request) {
         $this->validateRequest($request);
-        $teachingPlan = TeachingPlan::create($request->all());
+        $requestArray = $request->all();
+        $teachingPlan = TeachingPlan::create($requestArray);
+        $this->updateStats(null, $requestArray);
         return response()->json($teachingPlan, 201);
     }
 
     public function update($id, Request $request) {
         $this->validateRequest($request);
         $teachingPlan = TeachingPlan::findOrFail($id);
-        $teachingPlan->update($request->all());
+        $original = $teachingPlan->toArray();
+        $updated = $request->all();
+        $teachingPlan->update($updated);
+        $this->updateStats($original, $updated);
         return response()->json($teachingPlan, 200);
     }
 
@@ -46,5 +51,26 @@ class TeachingPlanController extends Controller
             'target_outcome_id' => 'required',
             'target_date' => 'required'
         ]);
+    }
+
+    function updateStats($original, $updated) {
+        if ($original) {
+            StatisticsAllController::updateStats(array(
+                'total_itps' => -1,
+                'total_itps_open' => $original['done'] === 0 ? -1 : 0,
+                'last_update_mode' => 'Event',
+                'date_modified' => $updated['date_modified']
+            ));
+        }
+
+        if ($updated['deleted'] === 0)
+        {
+            StatisticsAllController::updateStats(array(
+                'total_itps' => 1,
+                'total_itps_open' => $updated['done'] === 0 ? 1 : 0,
+                'last_update_mode' => 'Event',
+                'date_modified' => $updated['date_modified']
+            ));
+        }
     }
 }

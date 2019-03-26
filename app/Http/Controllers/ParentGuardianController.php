@@ -24,14 +24,19 @@ class ParentGuardianController extends Controller
 
     public function create(Request $request) {
         $this->validateRequest($request);
-        $parentGuardian = ParentGuardian::create($request->all());
+        $requestArray = $request->all();
+        $parentGuardian = ParentGuardian::create($requestArray);
+        $this->updateStats(null, $requestArray);
         return response()->json($parentGuardian, 201);
     }
 
     public function update($id, Request $request) {
         $this->validateRequest($request, false);
         $parentGuardian = ParentGuardian::findOrFail($id);
-        $parentGuardian->update($request->all());
+        $original = $parentGuardian->toArray();
+        $updated = $request->all();
+        $parentGuardian->update($updated);
+        $this->updateStats($original, $updated);
         return response()->json($parentGuardian, 200);
     }
 
@@ -50,6 +55,29 @@ class ParentGuardianController extends Controller
             $this->validate($request, [
                 'email' => 'unique:parents_guardians'
             ]);
+        }
+    }
+
+    function updateStats($original, $updated) {
+        if ($original) {
+            StatisticsAllController::updateStats(array(
+                'total_parents_guardians' => -1,
+                'total_parents' => $original['type'] === 'Parent' ? -1 : 0,
+                'total_guardians' => $original['type'] === 'Guardian' ? -1 : 0,
+                'last_update_mode' => 'Event',
+                'date_modified' => $updated['date_modified']
+            ));
+        }
+
+        if ($updated['deleted'] === 0)
+        {
+            StatisticsAllController::updateStats(array(
+                'total_parents_guardians' => 1,
+                'total_parents' => $updated['type'] === 'Parent' ? 1 : 0,
+                'total_guardians' => $updated['type'] === 'Guardian' ? 1 : 0,
+                'last_update_mode' => 'Event',
+                'date_modified' => $updated['date_modified']
+            ));
         }
     }
 }

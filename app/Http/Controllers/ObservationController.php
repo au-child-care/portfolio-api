@@ -22,14 +22,19 @@ class ObservationController extends Controller
 
     public function create(Request $request) {
         $this->validateRequest($request);
-        $observation = Observation::create($request->all());
+        $requestArray = $request->all();
+        $observation = Observation::create($requestArray);
+        $this->updateStats(null, $requestArray);
         return response()->json($observation, 201);
     }
 
     public function update($id, Request $request) {
         $this->validateRequest($request);
         $observation = Observation::findOrFail($id);
-        $observation->update($request->all());
+        $original = $observation->toArray();
+        $updated = $request->all();
+        $observation->update($updated);
+        $this->updateStats($original, $updated);
         return response()->json($observation, 200);
     }
 
@@ -52,5 +57,24 @@ class ObservationController extends Controller
             'outcome_id' => 'required',
             'date_tracked' => 'required'
         ]);
+    }
+
+    function updateStats($original, $updated) {
+        if ($original) {
+            StatisticsAllController::updateStats(array(
+                'total_observations' => -1,
+                'last_update_mode' => 'Event',
+                'date_modified' => $updated['date_modified']
+            ));
+        }
+
+        if ($updated['deleted'] === 0)
+        {
+            StatisticsAllController::updateStats(array(
+                'total_observations' => 1,
+                'last_update_mode' => 'Event',
+                'date_modified' => $updated['date_modified']
+            ));
+        }
     }
 }

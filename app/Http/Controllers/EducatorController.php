@@ -24,14 +24,19 @@ class EducatorController extends Controller
 
     public function create(Request $request) {
         $this->validateRequest($request);
-        $educator = Educator::create($request->all());
+        $requestArray = $request->all();
+        $educator = Educator::create($requestArray);
+        $this->updateStats(null, $requestArray);
         return response()->json($educator, 201);
     }
 
     public function update($id, Request $request) {
         $this->validateRequest($request, false);
         $educator = Educator::findOrFail($id);
-        $educator->update($request->all());
+        $original = $educator->toArray();
+        $updated = $request->all();
+        $educator->update($updated);
+        $this->updateStats($original, $updated);
         return response()->json($educator, 200);
     }
 
@@ -50,6 +55,25 @@ class EducatorController extends Controller
             $this->validate($request, [
                 'email' => 'unique:educators'
             ]);
+        }
+    }
+
+    function updateStats($original, $updated) {
+        if ($original) {
+            StatisticsAllController::updateStats(array(
+                'total_educators' => -1,
+                'last_update_mode' => 'Event',
+                'date_modified' => $updated['date_modified']
+            ));
+        }
+
+        if ($updated['deleted'] === 0)
+        {
+            StatisticsAllController::updateStats(array(
+                'total_educators' => 1,
+                'last_update_mode' => 'Event',
+                'date_modified' => $updated['date_modified']
+            ));
         }
     }
 }
