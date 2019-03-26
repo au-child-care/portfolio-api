@@ -87,4 +87,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('teachingPlan', ['uses' => 'TeachingPlanController@create']);  
     $router->delete('teachingPlan/{id}', ['uses' => 'TeachingPlanController@delete']);  
     $router->put('teachingPlan/{id}', ['uses' => 'TeachingPlanController@update']);
+
+    // Statistics routes
+    $router->get('statistics/all',  ['uses' => 'StatisticsAllController@get']); 
+    $router->put('statistics/all', ['uses' => 'StatisticsAllController@update']);
   });
