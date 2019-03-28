@@ -42,5 +42,7 @@ class StatisticsChild extends Model
     
     protected $table = 'stats_children';
 
+    protected $primaryKey = 'child_id';
+
     public $timestamps = false;
 }
