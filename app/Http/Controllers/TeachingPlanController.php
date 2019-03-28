@@ -61,6 +61,12 @@ class TeachingPlanController extends Controller
                 'last_update_mode' => 'Event',
                 'date_modified' => $updated['date_modified']
             ));
+            StatisticsChildController::updateStats($original['child_id'], array(
+                'total_itps' => -1,
+                'total_itps_open' => $original['done'] == 0 ? -1 : 0,
+                'last_update_mode' => 'Event',
+                'date_modified' => $updated['date_modified']
+            )); 
         }
 
         if ($updated['deleted'] == 0)
@@ -71,6 +77,12 @@ class TeachingPlanController extends Controller
                 'last_update_mode' => 'Event',
                 'date_modified' => $updated['date_modified']
             ));
+            StatisticsChildController::updateStats($updated['child_id'], array(
+                'total_itps' => 1,
+                'total_itps_open' => $updated['done'] == 0 ? 1 : 0,
+                'last_update_mode' => 'Event',
+                'date_modified' => $updated['date_modified']
+            )); 
         }
     }
 }
