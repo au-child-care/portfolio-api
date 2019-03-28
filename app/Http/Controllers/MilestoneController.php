@@ -43,7 +43,7 @@ class MilestoneController extends Controller
                 $updatePayload['total_milestones_social'] = array_key_exists("Social", $milestonesCount) ?  $milestonesCount['Social'] * -1 : 0;
                 $updatePayload['total_milestones_emotional'] = array_key_exists("Emotional", $milestonesCount) ?  $milestonesCount['Emotional'] * -1 : 0;
                 $updatePayload['total_milestones_cognitive'] = array_key_exists("Cognitive", $milestonesCount) ?  $milestonesCount['Cognitive'] * -1 : 0;
-                $updatePayload['total_milestones_Language'] = array_key_exists("Language", $milestonesCount) ?  $milestonesCount['Language'] * -1 : 0;
+                $updatePayload['total_milestones_language'] = array_key_exists("Language", $milestonesCount) ?  $milestonesCount['Language'] * -1 : 0;
                 $updatePayload['total_milestones_seek_advice'] = array_key_exists("Seek advice", $milestonesCount) ?  $milestonesCount['Seek advice'] * -1 : 0;
 
                 StatisticsChildController::updateStats($original[0]['child_id'], $updatePayload);
@@ -62,7 +62,7 @@ class MilestoneController extends Controller
                         'total_milestones_social' => array_key_exists("Social", $milestonesCount) ?  $milestonesCount['Social'] * -1 : 0,
                         'total_milestones_emotional' => array_key_exists("Emotional", $milestonesCount) ?  $milestonesCount['Emotional'] * -1 : 0,
                         'total_milestones_cognitive' => array_key_exists("Cognitive", $milestonesCount) ?  $milestonesCount['Cognitive'] * -1 : 0,
-                        'total_milestones_Language' => array_key_exists("Language", $milestonesCount) ?  $milestonesCount['Language'] * -1 : 0,
+                        'total_milestones_language' => array_key_exists("Language", $milestonesCount) ?  $milestonesCount['Language'] * -1 : 0,
                         'total_milestones_seek_advice' => array_key_exists("Seek advice", $milestonesCount) ?  $milestonesCount['Seek advice'] * -1 : 0,
                     );
                 
@@ -86,7 +86,7 @@ class MilestoneController extends Controller
                 $updatePayload['total_milestones_social'] = array_key_exists("Social", $milestonesCount) ?  $milestonesCount['Social'] : 0;
                 $updatePayload['total_milestones_emotional'] = array_key_exists("Emotional", $milestonesCount) ?  $milestonesCount['Emotional'] : 0;
                 $updatePayload['total_milestones_cognitive'] = array_key_exists("Cognitive", $milestonesCount) ?  $milestonesCount['Cognitive'] : 0;
-                $updatePayload['total_milestones_Language'] = array_key_exists("Language", $milestonesCount) ?  $milestonesCount['Language'] : 0;
+                $updatePayload['total_milestones_language'] = array_key_exists("Language", $milestonesCount) ?  $milestonesCount['Language'] : 0;
                 $updatePayload['total_milestones_seek_advice'] = array_key_exists("Seek advice", $milestonesCount) ?  $milestonesCount['Seek advice'] : 0;
 
                 StatisticsChildController::updateStats($updated[0]['child_id'], $updatePayload);
@@ -105,7 +105,7 @@ class MilestoneController extends Controller
                         'total_milestones_social' => array_key_exists("Social", $milestonesCount) ?  $milestonesCount['Social'] : 0,
                         'total_milestones_emotional' => array_key_exists("Emotional", $milestonesCount) ?  $milestonesCount['Emotional'] : 0,
                         'total_milestones_cognitive' => array_key_exists("Cognitive", $milestonesCount) ?  $milestonesCount['Cognitive'] : 0,
-                        'total_milestones_Language' => array_key_exists("Language", $milestonesCount) ?  $milestonesCount['Language'] : 0,
+                        'total_milestones_language' => array_key_exists("Language", $milestonesCount) ?  $milestonesCount['Language'] : 0,
                         'total_milestones_seek_advice' => array_key_exists("Seek advice", $milestonesCount) ?  $milestonesCount['Seek advice'] : 0,
                     );
                 

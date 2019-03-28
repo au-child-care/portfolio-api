@@ -22,7 +22,7 @@ class StatisticsChild extends Model
         'total_milestones_social',
         'total_milestones_emotional',
         'total_milestones_cognitive',
-        'total_milestones_Language',
+        'total_milestones_language',
         'total_milestones_seek_advice',
         'total_observations_outcome1',
         'total_observations_outcome2',
