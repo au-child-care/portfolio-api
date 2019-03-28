@@ -19,11 +19,6 @@ class StatisticsEducator extends Model
         'total_itps',
         'total_itps_open',
         'total_children',
-        'total_babies',
-        'total_senior_babies',
-        'total_toddlers',
-        'total_juniors',
-        'total_kinders',
         'total_milestones_physical',
         'total_milestones_social',
         'total_milestones_emotional',
@@ -47,6 +42,8 @@ class StatisticsEducator extends Model
     protected $hidden = [ ];
     
     protected $table = 'stats_educators';
+
+    protected $primaryKey = 'educator_id';
 
     public $timestamps = false;
 }

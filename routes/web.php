@@ -93,4 +93,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->put('statistics/all', ['uses' => 'StatisticsAllController@update']);
     $router->get('statistics/child/{child_id}',  ['uses' => 'StatisticsChildController@get']); 
     $router->put('statistics/child/{child_id}', ['uses' => 'StatisticsChildController@update']);
+    $router->get('statistics/educator/{educator_id}',  ['uses' => 'StatisticsEducatorController@get']); 
+    $router->put('statistics/educator/{educator_id}', ['uses' => 'StatisticsEducatorController@update']);
   });
