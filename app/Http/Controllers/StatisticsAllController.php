@@ -29,9 +29,9 @@ class StatisticsAllController extends Controller
     public static function updateStats($request) {
         $record = StatisticsAllController::getRecord();
         foreach(array_keys($request) as $key) {
-            if ($key === 'last_update_mode' || $key === 'date_modified') {
+            if ($key == 'last_update_mode' || $key == 'date_modified') {
                 $record[$key] = $request[$key];
-            } else if ($key !== 'id') {
+            } else if ($key != 'id') {
                 $record[$key] = $record[$key] + $request[$key];
                 if ($record[$key] < 0) {
                     $record[$key] = 0;

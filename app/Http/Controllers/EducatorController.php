@@ -67,7 +67,7 @@ class EducatorController extends Controller
             ));
         }
 
-        if ($updated['deleted'] === 0)
+        if ($updated['deleted'] == 0)
         {
             StatisticsAllController::updateStats(array(
                 'total_educators' => 1,

@@ -54,25 +54,25 @@ class ChildController extends Controller
         if ($original) {
             StatisticsAllController::updateStats(array(
                 'total_children' => -1,
-                'total_babies' => $original['group'] === 'Babies' ? -1 : 0,
-                'total_senior_babies' => $original['group'] === 'Senior Babies' ? -1 : 0,
-                'total_toddlers' => $original['group'] === 'Toddlers' ? -1 : 0,
-                'total_juniors' => $original['group'] === 'Juniors' ? -1 : 0,
-                'total_kinders' => $original['group'] === 'Kinders' ? -1 : 0,
+                'total_babies' => $original['group'] == 'Babies' ? -1 : 0,
+                'total_senior_babies' => $original['group'] == 'Senior Babies' ? -1 : 0,
+                'total_toddlers' => $original['group'] == 'Toddlers' ? -1 : 0,
+                'total_juniors' => $original['group'] == 'Juniors' ? -1 : 0,
+                'total_kinders' => $original['group'] == 'Kinders' ? -1 : 0,
                 'last_update_mode' => 'Event',
                 'date_modified' => $updated['date_modified']
             ));
         }
 
-        if ($updated['deleted'] === 0)
+        if ($updated['deleted'] == 0)
         {
             StatisticsAllController::updateStats(array(
                 'total_children' => 1,
-                'total_babies' => $updated['group'] === 'Babies' ? 1 : 0,
-                'total_senior_babies' => $updated['group'] === 'Senior Babies' ? 1 : 0,
-                'total_toddlers' => $updated['group'] === 'Toddlers' ? 1 : 0,
-                'total_juniors' => $updated['group'] === 'Juniors' ? 1 : 0,
-                'total_kinders' => $updated['group'] === 'Kinders' ? 1 : 0,
+                'total_babies' => $updated['group'] == 'Babies' ? 1 : 0,
+                'total_senior_babies' => $updated['group'] == 'Senior Babies' ? 1 : 0,
+                'total_toddlers' => $updated['group'] == 'Toddlers' ? 1 : 0,
+                'total_juniors' => $updated['group'] == 'Juniors' ? 1 : 0,
+                'total_kinders' => $updated['group'] == 'Kinders' ? 1 : 0,
                 'last_update_mode' => 'Event',
                 'date_modified' => $updated['date_modified']
             ));

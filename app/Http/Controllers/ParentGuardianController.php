@@ -62,19 +62,19 @@ class ParentGuardianController extends Controller
         if ($original) {
             StatisticsAllController::updateStats(array(
                 'total_parents_guardians' => -1,
-                'total_parents' => $original['type'] === 'Parent' ? -1 : 0,
-                'total_guardians' => $original['type'] === 'Guardian' ? -1 : 0,
+                'total_parents' => $original['type'] == 'Parent' ? -1 : 0,
+                'total_guardians' => $original['type'] == 'Guardian' ? -1 : 0,
                 'last_update_mode' => 'Event',
                 'date_modified' => $updated['date_modified']
             ));
         }
 
-        if ($updated['deleted'] === 0)
+        if ($updated['deleted'] == 0)
         {
             StatisticsAllController::updateStats(array(
                 'total_parents_guardians' => 1,
-                'total_parents' => $updated['type'] === 'Parent' ? 1 : 0,
-                'total_guardians' => $updated['type'] === 'Guardian' ? 1 : 0,
+                'total_parents' => $updated['type'] == 'Parent' ? 1 : 0,
+                'total_guardians' => $updated['type'] == 'Guardian' ? 1 : 0,
                 'last_update_mode' => 'Event',
                 'date_modified' => $updated['date_modified']
             ));

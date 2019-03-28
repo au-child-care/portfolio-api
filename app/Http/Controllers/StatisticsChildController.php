@@ -33,9 +33,9 @@ class StatisticsChildController extends Controller
     public static function updateStats($child_id, $request) {
         $record = StatisticsChildController::getRecord($child_id);
         foreach(array_keys($request) as $key) {
-            if ($key === 'last_update_mode' || $key === 'date_modified') {
+            if ($key == 'last_update_mode' || $key == 'date_modified') {
                 $record[$key] = $request[$key];
-            } else if ($key !== 'child_id') {
+            } else if ($key != 'child_id') {
                 $record[$key] = $record[$key] + $request[$key];
                 if ($record[$key] < 0) {
                     $record[$key] = 0;
