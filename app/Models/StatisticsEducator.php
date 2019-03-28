@@ -16,6 +16,7 @@ class StatisticsEducator extends Model
         'educator_id',
         'total_milestones',
         'total_observations',
+        'total_observations_unpublished',
         'total_itps',
         'total_itps_open',
         'total_children',
