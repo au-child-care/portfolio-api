@@ -55,34 +55,30 @@ class TeachingPlanController extends Controller
 
     function updateStats($original, $updated) {
         if ($original) {
-            StatisticsAllController::updateStats(array(
+            $updatePayload = array(
                 'total_itps' => -1,
                 'total_itps_open' => $original['done'] == 0 ? -1 : 0,
                 'last_update_mode' => 'Event',
                 'date_modified' => $updated['date_modified']
-            ));
-            StatisticsChildController::updateStats($original['child_id'], array(
-                'total_itps' => -1,
-                'total_itps_open' => $original['done'] == 0 ? -1 : 0,
-                'last_update_mode' => 'Event',
-                'date_modified' => $updated['date_modified']
-            )); 
+            );
+
+            StatisticsAllController::updateStats($updatePayload);
+            StatisticsChildController::updateStats($original['child_id'], $updatePayload); 
+            StatisticsEducatorController::updateStats($updated['educator_id'], $updatePayload); 
         }
 
         if ($updated['deleted'] == 0)
         {
-            StatisticsAllController::updateStats(array(
+            $updatePayload = array(
                 'total_itps' => 1,
                 'total_itps_open' => $updated['done'] == 0 ? 1 : 0,
                 'last_update_mode' => 'Event',
                 'date_modified' => $updated['date_modified']
-            ));
-            StatisticsChildController::updateStats($updated['child_id'], array(
-                'total_itps' => 1,
-                'total_itps_open' => $updated['done'] == 0 ? 1 : 0,
-                'last_update_mode' => 'Event',
-                'date_modified' => $updated['date_modified']
-            )); 
+            );
+
+            StatisticsAllController::updateStats($updatePayload);
+            StatisticsChildController::updateStats($updated['child_id'], $updatePayload); 
+            StatisticsEducatorController::updateStats($updated['educator_id'], $updatePayload); 
         }
     }
 }
