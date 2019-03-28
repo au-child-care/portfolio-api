@@ -31,7 +31,7 @@ class StatisticsAllController extends Controller
         foreach(array_keys($request) as $key) {
             if ($key === 'last_update_mode' || $key === 'date_modified') {
                 $record[$key] = $request[$key];
-            } else {
+            } else if ($key !== 'id') {
                 $record[$key] = $record[$key] + $request[$key];
                 if ($record[$key] < 0) {
                     $record[$key] = 0;
