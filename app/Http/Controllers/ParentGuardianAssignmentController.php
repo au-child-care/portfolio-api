@@ -27,6 +27,14 @@ class ParentGuardianAssignmentController extends Controller
                 ->get());
     }
 
+    public function getChildrenByParentGuardian($id) {
+        $encodedResult  = json_encode(ParentGuardianAssignment::where(['parentguardian_id' => $id])->get());
+        $arrayResult = json_decode($encodedResult, true);
+        $ids = array_column($arrayResult, 'child_id');
+        $childController = new ChildController();
+        return $childController->getAllByIds(implode(',',$ids));
+    }
+
     public function setByParentGuardian(Request $request) {
         ParentGuardianAssignment::where(['parentguardian_id' => (int)$request['id']])->delete();
         foreach ($request->all() as $current) {

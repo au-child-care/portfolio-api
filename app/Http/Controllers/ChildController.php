@@ -18,6 +18,10 @@ class ChildController extends Controller
         return response()->json(Child::find($id));
     }
 
+    public function getAllByIds($ids) {
+        return response()->json(Child::findMany(array_map('intval', explode(',', $ids))));
+    }
+
     public function create(Request $request) {
         $this->validateRequest($request);
         $requestArray = $request->all();

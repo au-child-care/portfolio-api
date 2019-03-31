@@ -28,6 +28,14 @@ class EducatorAssignmentController extends Controller
                 ->get());
     }
 
+    public function getChildrenByEducator($id) {
+        $encodedResult  = json_encode(EducatorAssignment::where(['educator_id' => $id])->get());
+        $arrayResult = json_decode($encodedResult, true);
+        $ids = array_column($arrayResult, 'child_id');
+        $childController = new ChildController();
+        return $childController->getAllByIds(implode(',',$ids));
+    }
+
     public function setByEducator(Request $request) {
         EducatorAssignment::where(['educator_id' => (int)$request['id']])->delete();
         foreach ($request->all() as $current) {
