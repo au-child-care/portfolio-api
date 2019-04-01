@@ -8,6 +8,8 @@ use App\Models\Educator;
 use App\Models\EducatorAssignment;
 use App\Models\Milestone;
 use App\Models\Observation;
+use App\Models\ParentGuardian;
+use App\Models\StatisticsAll;
 use App\Models\StatisticsChild;
 use App\Models\StatisticsChildMilestonesPending;
 use App\Models\StatisticsChildObservationsDue;
@@ -23,11 +25,12 @@ class StatisticsController extends Controller
     public function update() {
         $this->updateChildrenStats();
         $this->updateEducatorsStats();
+        $this->updateAllStats();
         return response('Completed Successfully', 200);
     }
 
     private function updateChildrenStats() {
-        // Cleanup child statistics table
+        // Cleanup child statistics tables
         StatisticsChild::truncate();
         StatisticsChildSeekAdvice::truncate();
         StatisticsChildMilestonesPending::truncate();
@@ -133,7 +136,7 @@ class StatisticsController extends Controller
     }
 
     private function updateEducatorsStats() {
-        // Cleanup ceducator statistics table
+        // Cleanup educator statistics tables
         StatisticsEducator::truncate();
         StatisticsEducatorTracking::truncate();
         
@@ -199,5 +202,41 @@ class StatisticsController extends Controller
                 'date_modified'=> date('Y-m-d H:i:s')
             ]);
         }
+    }
+
+    private function updateAllStats() {
+        // Cleanup all statistics tables
+        StatisticsAll::truncate();
+
+        $milestones = Milestone::all();
+        $observations = Observation::where([
+            'deleted' => 0
+        ])->get();
+        $teachingPlans = TeachingPlan::where([
+            'deleted' => 0
+        ])->get();
+        $educators = Educator::where(['deleted' => 0])->get();
+        $parentsGuardians = ParentGuardian::where(['deleted' => 0])->get();
+        $children = Child::where(['deleted' => 0])->get();
+
+        // All statistics
+        StatisticsAll::create([
+            'total_milestones' => $milestones->count(),
+            'total_observations' => $observations->count(),
+            'total_itps' => $teachingPlans->count(),
+            'total_itps_open' => $teachingPlans->where('done', 0)->count(),
+            'total_parents_guardians' => $parentsGuardians->count(),
+            'total_parents' => $parentsGuardians->where('type', 'Parent')->count(),
+            'total_guardians' => $parentsGuardians->where('type', 'Guardian')->count(),
+            'total_children' => $children->count(),
+            'total_babies' => $children->where('group', 'Babies')->count(),
+            'total_senior_babies' => $children->where('group', 'Senior Babies')->count(),
+            'total_toddlers' => $children->where('group', 'Toddlers')->count(),
+            'total_juniors' => $children->where('group', 'Juniors')->count(),
+            'total_kinders' => $children->where('group', 'Kinders')->count(),
+            'total_educators' => $educators->count(),
+            'last_update_mode'=> 'FullUpdate',
+            'date_modified'=> date('Y-m-d H:i:s')
+        ]);
     }
 }
