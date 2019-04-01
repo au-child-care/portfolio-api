@@ -14,6 +14,7 @@ class StatisticsChildSeekAdvice extends Model
      */
     protected $fillable = [
         'child_id',
+        'name',
         'current_group',
         'milestone_age_group',
         'count',

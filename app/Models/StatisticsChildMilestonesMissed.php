@@ -14,6 +14,7 @@ class StatisticsChildMilestonesMissed extends Model
      */
     protected $fillable = [
         'child_id',
+        'name',
         'current_group',
         'milestones_missed',
         'total',
