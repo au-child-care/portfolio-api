@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Models\Child;
+use App\Models\Educator;
+use App\Models\EducatorAssignment;
 use App\Models\Milestone;
 use App\Models\Observation;
 use App\Models\StatisticsChild;
 use App\Models\StatisticsChildMilestonesPending;
 use App\Models\StatisticsChildObservationsDue;
 use App\Models\StatisticsChildSeekAdvice;
+use App\Models\StatisticsEducator;
+use App\Models\StatisticsEducatorTracking;
 use App\Models\TeachingPlan;
 use App\Utilities\MilestonesUtilities;
 use Illuminate\Http\Request;
@@ -18,18 +22,19 @@ class StatisticsController extends Controller
 {
     public function update() {
         $this->updateChildrenStats();
+        $this->updateEducatorsStats();
         return response('Completed Successfully', 200);
     }
 
     private function updateChildrenStats() {
-        // Cleanup chils statistics table
+        // Cleanup child statistics table
         StatisticsChild::truncate();
         StatisticsChildSeekAdvice::truncate();
         StatisticsChildMilestonesPending::truncate();
         StatisticsChildObservationsDue::truncate();
 
         // Build child statistics
-        foreach(Child::get() as $child) {
+        foreach(Child::where(['deleted' => 0])->get() as $child) {
             $milestones = Milestone::where(['child_id' => $child['id']])->get();
             $observations = Observation::where([
                 'child_id' => $child['id'],
@@ -78,6 +83,7 @@ class StatisticsController extends Controller
                 }
             }
 
+            // Child pending milestones stats
             $birthday = new \DateTime($child['birthday']);
             $childMonths = ((new \DateTime(date('Y-m-d')))->diff($birthday)->y * 12) + (new \DateTime(date('Y-m-d')))->diff($birthday)->m;
             $pending_milestones = '';
@@ -110,6 +116,7 @@ class StatisticsController extends Controller
                 ]);
             }
 
+            // Child observations due stats
             $lastObservation = is_null($child['last_observation_activity']) ? (new \DateTime())->setTimestamp(0) : new \DateTime($child['last_observation_activity']);
             $lastObservationMonths = ((new \DateTime(date('Y-m-d')))->diff($lastObservation)->y * 12) + (new \DateTime(date('Y-m-d')))->diff($lastObservation)->m;
             if ($lastObservationMonths > 0) {
@@ -122,6 +129,75 @@ class StatisticsController extends Controller
                     'date_modified'=> date('Y-m-d H:i:s')
                 ]);
             }
+        }
+    }
+
+    private function updateEducatorsStats() {
+        // Cleanup ceducator statistics table
+        StatisticsEducator::truncate();
+        StatisticsEducatorTracking::truncate();
+        
+        // Build educator statistics
+        foreach(Educator::where(['deleted' => 0])->get() as $educator) {
+            $milestones = Milestone::where(['educator_id' => $educator['id']])->get();
+            $observations = Observation::where([
+                'educator_id' => $educator['id'],
+                'deleted' => 0
+            ])->get();
+            $teachingPlans = TeachingPlan::where([
+                'educator_id' => $educator['id'],
+                'deleted' => 0
+            ])->get();
+            $assignment = EducatorAssignment::where([
+                'educator_id' => $educator['id']
+            ])->get();
+            $arrayResult = json_decode($assignment, true);
+            $childIds = array_column($arrayResult, 'child_id');
+            $children = Child::findMany($childIds)->toArray();
+            $childrenStatsSeekAdvice = StatisticsChildSeekAdvice::findMany($childIds)->toArray();
+            $childrenStatsMilestonesPending = StatisticsChildMilestonesPending::findMany($childIds)->toArray();
+            $childrenStatsObservationsDue = StatisticsChildObservationsDue::findMany($childIds)->toArray();
+
+            // Educator statistics
+            StatisticsEducator::create([
+                'educator_id' => $educator['id'],
+                'total_milestones' => $milestones->count(),
+                'total_observations' => $observations->count(),
+                'total_observations_unpublished' => $observations->where('published', 0)->count(),
+                'total_itps' => $teachingPlans->count(),
+                'total_itps_open' => $teachingPlans->where('done', 0)->count(),
+                'total_children' => $assignment->count(),
+                'total_milestones_physical' => $milestones->where('developmental_area', 'Physical')->count(),
+                'total_milestones_social' => $milestones->where('developmental_area', 'Social')->count(),
+                'total_milestones_emotional' => $milestones->where('developmental_area', 'Emotional')->count(),
+                'total_milestones_cognitive' => $milestones->where('developmental_area', 'Cognitive')->count(),
+                'total_milestones_language' => $milestones->where('developmental_area', 'Language')->count(),
+                'total_milestones_seek_advice' => $milestones->where('developmental_area', 'Seek advice')->count(),
+                'total_observations_outcome1' => $observations->where('outcome_id', 1)->count(),
+                'total_observations_outcome2' => $observations->where('outcome_id', 2)->count(),
+                'total_observations_outcome3' => $observations->where('outcome_id', 3)->count(),
+                'total_observations_outcome4' => $observations->where('outcome_id', 4)->count(),
+                'total_observations_outcome5' => $observations->where('outcome_id', 5)->count(),
+                'last_update_mode'=> 'FullUpdate',
+                'date_modified'=> date('Y-m-d H:i:s')
+            ]);
+            
+            // Educator tracking statistics
+            StatisticsEducatorTracking::create([
+                'educator_id' => $educator['id'],
+                'name' => $educator['first_name'] . ' ' . $educator['last_name'],
+                'total_milestones' => $milestones->count(),
+                'groups_handled' => join(', ', array_unique(array_column($children, 'group'))),
+                'total_children' => $assignment->count(),
+                'total_children_seeking_advice' => sizeof(array_unique(array_column($childrenStatsSeekAdvice, 'child_id'))),
+                'total_children_milestones_pending' => sizeof($childrenStatsMilestonesPending),
+                'total_children_observations_due' => sizeof($childrenStatsObservationsDue),
+                'total_milestones' => $milestones->count(),
+                'total_observations' => $observations->count(),
+                'total_itps' => $teachingPlans->count(),
+                'last_update_mode'=> 'FullUpdate',
+                'date_modified'=> date('Y-m-d H:i:s')
+            ]);
         }
     }
 }

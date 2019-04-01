@@ -18,7 +18,7 @@ class StatisticsEducatorTracking extends Model
         'groups_handled',
         'total_children',
         'total_children_seeking_advice',
-        'total_children_milestones_missed',
+        'total_children_milestones_pending',
         'total_children_observations_due',
         'total_milestones',
         'total_observations',
