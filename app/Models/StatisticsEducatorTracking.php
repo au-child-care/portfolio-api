@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StatisticsChildObservationsDue extends Model
+class StatisticsEducatorTracking extends Model
 {
 
     /**
@@ -13,10 +13,16 @@ class StatisticsChildObservationsDue extends Model
      * @var array
      */
     protected $fillable = [
-        'child_id',
+        'educator_id',
         'name',
-        'group',
-        'last_observation',
+        'groups_handled',
+        'total_children',
+        'total_children_seeking_advice',
+        'total_children_milestones_missed',
+        'total_children_observations_due',
+        'total_milestones',
+        'total_observations',
+        'total_itps',
         'last_update_mode',
         'date_modified'
     ];
@@ -28,9 +34,9 @@ class StatisticsChildObservationsDue extends Model
      */
     protected $hidden = [ ];
     
-    protected $table = 'stats_children_observations_due';
+    protected $table = 'stats_educators_tracking';
 
-    protected $primaryKey = 'child_id';
+    protected $primaryKey = 'educator_id';
 
     public $timestamps = false;
 }
