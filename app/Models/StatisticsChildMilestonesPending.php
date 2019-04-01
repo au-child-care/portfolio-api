@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StatisticsChildMilestonesMissed extends Model
+class StatisticsChildMilestonesPending extends Model
 {
 
     /**
@@ -16,7 +16,8 @@ class StatisticsChildMilestonesMissed extends Model
         'child_id',
         'name',
         'current_group',
-        'milestones_missed',
+        'current_age_group',
+        'pending_milestones',
         'total',
         'last_update_mode',
         'date_modified'
@@ -29,7 +30,7 @@ class StatisticsChildMilestonesMissed extends Model
      */
     protected $hidden = [ ];
     
-    protected $table = 'stats_children_milestones_missed';
+    protected $table = 'stats_children_milestones_pending';
 
     protected $primaryKey = 'child_id';
 
