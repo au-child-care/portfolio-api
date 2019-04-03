@@ -102,6 +102,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('statistics/child/seeking-advice/{ids}',  ['uses' => 'StatisticsChildController@getSeekingAdvice']);
     $router->get('statistics/educator/{educator_id}',  ['uses' => 'StatisticsEducatorController@get']); 
     $router->put('statistics/educator/{educator_id}', ['uses' => 'StatisticsEducatorController@update']);
+    $router->get('statistics/educator/{educator_id}/children', ['uses' => 'StatisticsEducatorController@getAssignedChildrenStats']);
     $router->get('statistics/educator/tracking/all',  ['uses' => 'StatisticsEducatorController@getAllTracking']);
     $router->get('statistics/educator/tracking/{educator_id}',  ['uses' => 'StatisticsEducatorController@getTracking']);  
   });

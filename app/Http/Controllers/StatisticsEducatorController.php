@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use DB;
+use App\Models\EducatorAssignment;
+use App\Models\StatisticsChild;
+use App\Models\StatisticsChildMilestonesPending;
+use App\Models\StatisticsChildObservationsDue;
+use App\Models\StatisticsChildSeekAdvice;
 use App\Models\StatisticsEducator;
 use App\Models\StatisticsEducatorTracking;
 use Illuminate\Http\Request;
@@ -19,6 +24,19 @@ class StatisticsEducatorController extends Controller
 
     public function getAllTracking() {
         return response()->json(StatisticsEducatorTracking::all());
+    }
+
+    public function getAssignedChildrenStats($educator_id) {        
+        $encodedResult  = json_encode(EducatorAssignment::where(['educator_id' => $educator_id])->get());
+        $arrayResult = json_decode($encodedResult, true);
+        $ids = array_column($arrayResult, 'child_id');
+        $statistics = array(
+            'statistics' => StatisticsChild::findMany(array_map('intval', $ids)),
+            'milestones_pending' => StatisticsChildMilestonesPending::findMany(array_map('intval', $ids)),
+            'observations_due' => StatisticsChildObservationsDue::findMany(array_map('intval', $ids)),
+            'seeking_advice' => StatisticsChildSeekAdvice::findMany(array_map('intval', $ids))
+        );
+        return response()->json($statistics, 200);
     }
 
     public function update($educator_id, Request $request) {
