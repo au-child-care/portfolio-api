@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Models\StatisticsEducator;
+use App\Models\StatisticsEducatorTracking;
 use Illuminate\Http\Request;
 
 class StatisticsEducatorController extends Controller
 {
     public function get($educator_id) {
         return response()->json(StatisticsEducatorController::getRecord($educator_id));
+    }
+
+    public function getTracking($educator_id) {
+        return response()->json(StatisticsEducatorTracking::find($educator_id));
+    }
+
+    public function getAllTracking() {
+        return response()->json(StatisticsEducatorTracking::all());
     }
 
     public function update($educator_id, Request $request) {
