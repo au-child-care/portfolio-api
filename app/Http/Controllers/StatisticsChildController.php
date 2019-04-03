@@ -4,12 +4,27 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Models\StatisticsChild;
+use App\Models\StatisticsChildMilestonesPending;
+use App\Models\StatisticsChildObservationsDue;
+use App\Models\StatisticsChildSeekAdvice;
 use Illuminate\Http\Request;
 
 class StatisticsChildController extends Controller
 {
     public function get($child_id) {
         return response()->json(StatisticsChildController::getRecord($child_id));
+    }
+
+    public function getMilestonesPending($ids) {        
+        return response()->json(StatisticsChildMilestonesPending::findMany(array_map('intval', explode(',', $ids))));
+    }
+
+    public function getObservationsDue($ids) {        
+        return response()->json(StatisticsChildObservationsDue::findMany(array_map('intval', explode(',', $ids))));
+    }
+
+    public function getSeekingAdvice($ids) {        
+        return response()->json(StatisticsChildSeekAdvice::findMany(array_map('intval', explode(',', $ids))));
     }
 
     public function update($child_id, Request $request) {
