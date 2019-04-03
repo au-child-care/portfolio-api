@@ -102,7 +102,7 @@ class StatisticsController extends Controller
                 $pendingMilestonesTotal += $notAchieved;
                 if ($notAchieved > 0) {
                     $pending_milestones = $pending_milestones . 
-                        (($pending_milestones != '') ? '\n' : '') .
+                        (($pending_milestones != '') ? ', ' : '') .
                         $quota['developmental_area'] . ': ' . $notAchieved;
                 }
             }
