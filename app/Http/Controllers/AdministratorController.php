@@ -44,7 +44,7 @@ class AdministratorController extends Controller
         ]);
         if ($forCreate) {
             $this->validate($request, [
-                'email' => 'unique:administrators'
+                'email' => 'unique_with:administrators,deleted'
             ]);
         }
     }

@@ -53,7 +53,7 @@ class ParentGuardianController extends Controller
         ]);
         if ($forCreate) {
             $this->validate($request, [
-                'email' => 'unique:parents_guardians'
+                'email' => 'unique_with:parents_guardians,deleted'
             ]);
         }
     }
