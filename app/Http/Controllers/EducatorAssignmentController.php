@@ -53,4 +53,11 @@ class EducatorAssignmentController extends Controller
         EducatorAssignment::where(['child_id' => $id])->delete();
         return response()->json('Educator - children assignment was successfully removed.', 200);
     }
+
+    public static function getEducatorIdsByChild($child_id) {
+        $encodedResult  = json_encode(EducatorAssignment::where(['child_id' => $child_id])->get());
+        $arrayResult = json_decode($encodedResult, true);
+        $ids = array_column($arrayResult, 'educator_id');
+        return $ids;
+    }
 }

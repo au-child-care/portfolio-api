@@ -52,4 +52,11 @@ class ParentGuardianAssignmentController extends Controller
         ParentGuardianAssignment::where(['child_id' => $id])->delete();
         return response()->json('Parent / guardian - children assignment was successfully removed.', 200);
     }
+
+    public static function getParentGuardianIdsByChild($child_id) {
+        $encodedResult  = json_encode(ParentGuardianAssignment::where(['child_id' => $child_id])->get());
+        $arrayResult = json_decode($encodedResult, true);
+        $ids = array_column($arrayResult, 'parentguardian_id');
+        return $ids;
+    }
 }

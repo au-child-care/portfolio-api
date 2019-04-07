@@ -56,6 +56,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->delete('feedback/{id}', ['uses' => 'FeedbackController@delete']);  
     $router->put('feedback/{id}', ['uses' => 'FeedbackController@update']);
 
+    // Notification routes
+    $router->get('notification',  ['uses' => 'NotificationController@getAll']); 
+    $router->get('notification/{id}', ['uses' => 'NotificationController@get']);  
+    $router->get('notification-recipient',  ['uses' => 'NotificationController@getAllForRecipient']);
+    $router->post('notification', ['uses' => 'notification@create']);  
+    $router->delete('notification/{id}', ['uses' => 'NotificationController@delete']);  
+    $router->put('notification/{id}', ['uses' => 'NotificationController@update']);
+
     // Milestone routes $router->get('educatorassignment/byChild/{id}',  ['uses' => 'EducatorAssignmentController@getByChild']);
     $router->get('milestone/byChild/{id}',  ['uses' => 'MilestoneController@getByChild']);
     $router->post('milestone/byChild/{id}', ['uses' => 'MilestoneController@setByChild']);
