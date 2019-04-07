@@ -48,7 +48,7 @@ class NotificationController extends Controller
     public function updateMultiple(Request $request) {        
         foreach ($request->all() as $current) {
             $Notification = Notification::findOrFail($current['id']);
-            $Notification->update($current->all());
+            $Notification->update($current);
         }
         return response()->json('Notifications were successfully updated.', 200);
     }

@@ -60,7 +60,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('notification',  ['uses' => 'NotificationController@getAll']); 
     $router->get('notification/{id}', ['uses' => 'NotificationController@get']);  
     $router->get('notification-recipient',  ['uses' => 'NotificationController@getAllForRecipient']);
-    $router->post('notification', ['uses' => 'notification@create']);  
+    $router->post('notification', ['uses' => 'NotificationController@create']);  
+    $router->post('notification-updates', ['uses' => 'NotificationController@updateMultiple']);
     $router->delete('notification/{id}', ['uses' => 'NotificationController@delete']);  
     $router->put('notification/{id}', ['uses' => 'NotificationController@update']);
 
