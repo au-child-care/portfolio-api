@@ -51,6 +51,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     // Feedback routes
     $router->get('feedback',  ['uses' => 'FeedbackController@getAll']); 
     $router->get('feedback/{id}', ['uses' => 'FeedbackController@get']);  
+    $router->get('feedback/child/{id}',  ['uses' => 'FeedbackController@getAllForChild']);
     $router->post('feedback', ['uses' => 'FeedbackController@create']);  
     $router->delete('feedback/{id}', ['uses' => 'FeedbackController@delete']);  
     $router->put('feedback/{id}', ['uses' => 'FeedbackController@update']);

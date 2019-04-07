@@ -11,7 +11,15 @@ class FeedbackController extends Controller
         $active = $request['active'] ?? 1;
         $deleted = $request['deleted'] ?? 0;
         return response()->json(
-            Feedback::where(['active' => (int)$active, 'deleted' => (int)$deleted])
+            Feedback::where(['deleted' => (int)$deleted])
+                ->orderBy('date_created', 'desc')
+                ->get());
+    }
+
+    public function getAllForChild($id) {
+        return response()->json(
+            Feedback::where(['child_id' => $id, 'deleted' => 0])
+                ->orderBy('date_created', 'desc')
                 ->get());
     }
 

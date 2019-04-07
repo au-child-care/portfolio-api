@@ -13,7 +13,7 @@ class Feedback extends Model
      * @var array
      */
     protected $fillable = [
-        'child_id', 'feedback', 'parent_id', 'educator_id', 'administrator_id', 'published', 'deleted', 'date_created', 'date_modified'
+        'child_id', 'feedback', 'role', 'name', 'deleted', 'date_created', 'date_modified'
     ];
 
     /**
