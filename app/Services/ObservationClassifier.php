@@ -50,15 +50,32 @@ class ObservationClassifier {
 
         $outcomesCounts = array_count_values($predictedLabels);
         $result = array(
-            'Recommended Outcome' => $this->GetRecommendedObservation($outcomesCounts),
-            'Token Breakdown' => array(
-                'Unknown Tokens' => $this->GetObservationCount('0', $outcomesCounts),
-                'Children have a strong sense of identity' => $this->GetObservationCount('1', $outcomesCounts),
-                'Children are connected with and contribute to their world' => $this->GetObservationCount('2', $outcomesCounts),
-                'Children have a strong sense of wellbeing' => $this->GetObservationCount('3', $outcomesCounts),
-                'Children are confident and involved learners' => $this->GetObservationCount('4', $outcomesCounts),
-                'Children are effective communicators' => $this->GetObservationCount('5', $outcomesCounts),
+            'recommendedOutcomeId' => $this->GetRecommendedObservation($outcomesCounts),
+            'breakdown' => array(
+                'unknownOutcome' => $this->GetObservationCount('0', $outcomesCounts),
+                'outcome1' => $this->GetObservationCount('1', $outcomesCounts),
+                'outcome2' => $this->GetObservationCount('2', $outcomesCounts),
+                'outcome3' => $this->GetObservationCount('3', $outcomesCounts),
+                'outcome4' => $this->GetObservationCount('4', $outcomesCounts),
+                'outcome5' => $this->GetObservationCount('5', $outcomesCounts),
             )
+        );
+
+        $totalMatched = $result['breakdown']['outcome1'] +
+            $result['breakdown']['outcome2'] + 
+            $result['breakdown']['outcome3'] +
+            $result['breakdown']['outcome4'] +
+            $result['breakdown']['outcome5'];
+        if ($totalMatched == 0) {
+            $totalMatched = 1;
+        } 
+
+        $result['matchedPercentage'] = array(
+            'outcome1' => round(($result['breakdown']['outcome1'] / $totalMatched) * 100, 2),
+            'outcome2' => round(($result['breakdown']['outcome2'] / $totalMatched) * 100, 2),
+            'outcome3' => round(($result['breakdown']['outcome3'] / $totalMatched) * 100, 2),
+            'outcome4' => round(($result['breakdown']['outcome4'] / $totalMatched) * 100, 2),
+            'outcome5' => round(($result['breakdown']['outcome5'] / $totalMatched) * 100, 2),
         );
 
         return $result;
@@ -74,19 +91,7 @@ class ObservationClassifier {
             }
         }
 
-        switch ($mostMatched) {
-            case '1':
-                return 'Children have a strong sense of identity';
-            case '2':
-                return 'Children are connected with and contribute to their world';
-            case '3':
-                return 'Children have a strong sense of wellbeing';
-            case '4':
-                return 'Children are confident and involved learners';
-            case '5':
-                return 'Children are effective communicators';
-        }
-        return "None";
+        return (int)$mostMatched;
     }
 
     function GetObservationCount($observationNumber, $outcomesCounts) {
