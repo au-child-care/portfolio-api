@@ -56,16 +56,16 @@ class FeedbackController extends Controller
 
     function createNotifications(Feedback $feedback) {
         $child = Child::find($feedback['child_id']);
-        if ($feedback['giver_role'] == 'Administrator' || $feedback['giver_role'] == 'Educator') {
+        if ($feedback['giver_role'] == 'ROLE_ADMIN' || $feedback['giver_role'] == 'ROLE_EDUCATOR') {
             $parentGuardianIds = ParentGuardianAssignmentController::getParentGuardianIdsByChild($feedback['child_id']);
             foreach ($parentGuardianIds as $id) {
-                $this->createNotification($feedback, $child, $id, 'Parent / Guardian');
+                $this->createNotification($feedback, $child, $id, 'ROLE_PARENT_GUARDIAN');
             }
         }
-        if ($feedback['giver_role'] == 'Administrator' || $feedback['giver_role'] == 'Parent / Guardian') {
+        if ($feedback['giver_role'] == 'ROLE_ADMIN' || $feedback['giver_role'] == 'ROLE_PARENT_GUARDIAN') {
             $educatorIds = EducatorAssignmentController::getEducatorIdsByChild($feedback['child_id']);
             foreach ($educatorIds as $id) {
-                $this->createNotification($feedback, $child, $id, 'Educator');
+                $this->createNotification($feedback, $child, $id, 'ROLE_EDUCATOR');
             }
         }
     }
