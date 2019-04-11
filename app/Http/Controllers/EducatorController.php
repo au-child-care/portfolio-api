@@ -63,16 +63,16 @@ class EducatorController extends Controller
             StatisticsAllController::updateStats(array(
                 'total_educators' => -1,
                 'last_update_mode' => 'Event',
-                'date_modified' => $updated['date_modified']
+                'date_modified' => array_key_exists('date_modified', $updated) ? $updated['date_modified'] : date('Y-m-d H:i:s')
             ));
         }
 
-        if ($updated['deleted'] == 0)
+        if (array_key_exists('deleted', $updated) && $updated['deleted'] == 0)
         {
             StatisticsAllController::updateStats(array(
                 'total_educators' => 1,
                 'last_update_mode' => 'Event',
-                'date_modified' => $updated['date_modified']
+                'date_modified' => array_key_exists('date_modified', $updated) ? $updated['date_modified'] : date('Y-m-d H:i:s')
             ));
         }
     }

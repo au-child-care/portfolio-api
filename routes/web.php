@@ -16,6 +16,10 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
+    // Account routes
+    $router->post('account/authenticate',  ['uses' => 'AccountController@authenticate']); 
+    $router->put('account/update/{role}',  ['uses' => 'AccountController@update']); 
+
     // Administrator routes
     $router->get('administrator',  ['uses' => 'AdministratorController@getAll']); 
     $router->get('administrator/{id}', ['uses' => 'AdministratorController@get']);  
