@@ -16,11 +16,11 @@ class AccountController extends Controller
         $records = array();
 
         if ($role === 'ROLE_ADMIN') {
-            $records = Administrator::where(['email' => $email])->get()->toArray();
+            $records = Administrator::where(['email' => $email, 'deleted' => 0])->get()->toArray();
         } elseif ($role === 'ROLE_EDUCATOR') {
-            $records = Educator::where(['email' => $email])->get()->toArray();
+            $records = Educator::where(['email' => $email, 'deleted' => 0])->get()->toArray();
         } elseif ($role === 'ROLE_PARENT_GUARDIAN') {
-            $records = ParentGuardian::where(['email' => $email])->get()->toArray();
+            $records = ParentGuardian::where(['email' => $email, 'deleted' => 0])->get()->toArray();
         } else {
             return response()->json(array(                    
                     'success' => false,
