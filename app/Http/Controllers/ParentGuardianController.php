@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ParentGuardian;
+use App\Utilities\PasswordUtilities;
 use Illuminate\Http\Request;
 
 class ParentGuardianController extends Controller
@@ -32,7 +33,7 @@ class ParentGuardianController extends Controller
     public function create(Request $request) {
         $this->validateRequest($request);
         $requestArray = $request->all();
-        $parentGuardian = ParentGuardian::create($requestArray);
+        $parentGuardian = ParentGuardian::create(PasswordUtilities::preparePasswordField($requestArray));
         $this->updateStats($requestArray['centre_id'], null, $requestArray);
         return response()->json($parentGuardian, 201);
     }
@@ -42,8 +43,8 @@ class ParentGuardianController extends Controller
         $parentGuardian = ParentGuardian::findOrFail($id);
         $original = $parentGuardian->toArray();
         $updated = $request->all();
-        $parentGuardian->update($updated);
-        $this->updateStats($updated['centre_id'], $original, $updated);
+        $parentGuardian->update(PasswordUtilities::preparePasswordField($updated));
+        $this->updateStats($parentGuardian['centre_id'], $original, $updated);
         return response()->json($parentGuardian, 200);
     }
 
@@ -54,13 +55,13 @@ class ParentGuardianController extends Controller
 
     function validateRequest(Request $request, bool $forCreate = true) {
         $this->validate($request, [
-            'centre_id' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email'
         ]);
         if ($forCreate) {
             $this->validate($request, [
+                'centre_id' => 'required',
                 'email' => 'unique_with:parents_guardians,deleted'
             ]);
         }

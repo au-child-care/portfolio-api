@@ -34,17 +34,17 @@ class AccountController extends Controller
                     $records = Administrator::where([
                         'centre_id' => $centre['id'],
                         'email' => $email,
-                        'deleted' => 0])->get()->toArray();
+                        'deleted' => 0])->get();
                 } elseif ($role === 'ROLE_EDUCATOR') {
                     $records = Educator::where([
                         'centre_id' => $centre['id'],
                         'email' => $email,
-                        'deleted' => 0])->get()->toArray();
+                        'deleted' => 0])->get();
                 } elseif ($role === 'ROLE_PARENT_GUARDIAN') {
                     $records = ParentGuardian::where([
                         'centre_id' => $centre['id'],
                         'email' => $email,
-                        'deleted' => 0])->get()->toArray();
+                        'deleted' => 0])->get();
                 } else {
                     return response()->json(array(                    
                             'success' => false,
@@ -60,7 +60,7 @@ class AccountController extends Controller
                             'message' => 'Account is inactive. Please contact an administrator.'
                         ), 401);
                     } else {
-                        if ($password === $record['password']) {
+                        if ($password === $record->makeVisible(['password'])['password']) {
                             return response()->json(array(
                                 'success' => true,
                                 'message' => 'Login successful.',

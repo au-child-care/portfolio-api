@@ -21,7 +21,7 @@ class Administrator extends Model
      *
      * @var array
      */
-    protected $hidden = [ ];
+    protected $hidden = [ 'password' ];
 
     public $timestamps = false;
 }

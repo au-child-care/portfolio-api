@@ -39,12 +39,12 @@ class ChildController extends Controller
     }
 
     public function update($id, Request $request) {
-        $this->validateRequest($request);
+        $this->validateRequest($request, false);
         $child = Child::findOrFail($id);
         $original = $child->toArray();
         $updated = $request->all();
         $child->update($updated);
-        $this->updateStats($updated['centre_id'], $original, $updated);
+        $this->updateStats($child['centre_id'], $original, $updated);
         return response()->json($child, 200);
     }
 
@@ -53,14 +53,18 @@ class ChildController extends Controller
         return response('Deleted Successfully', 200);
     }
 
-    function validateRequest(Request $request) {
+    function validateRequest(Request $request, bool $forCreate = true) {
         $this->validate($request, [
-            'centre_id' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'birthday' => 'required',
             'group' => 'required'
         ]);
+        if ($forCreate) {
+            $this->validate($request, [
+                'centre_id' => 'required'
+            ]);
+        }
     }
 
     function updateStats($centre_id, $original, $updated) {

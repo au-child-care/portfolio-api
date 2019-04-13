@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Educator;
+use App\Utilities\PasswordUtilities;
 use Illuminate\Http\Request;
 
 class EducatorController extends Controller
@@ -32,7 +33,7 @@ class EducatorController extends Controller
     public function create(Request $request) {
         $this->validateRequest($request);
         $requestArray = $request->all();
-        $educator = Educator::create($requestArray);
+        $educator = Educator::create(PasswordUtilities::preparePasswordField($requestArray));
         $this->updateStats($requestArray['centre_id'], null, $requestArray);
         return response()->json($educator, 201);
     }
@@ -42,8 +43,8 @@ class EducatorController extends Controller
         $educator = Educator::findOrFail($id);
         $original = $educator->toArray();
         $updated = $request->all();
-        $educator->update($updated);
-        $this->updateStats($updated['centre_id'], $original, $updated);
+        $educator->update(PasswordUtilities::preparePasswordField($updated));
+        $this->updateStats($educator['centre_id'], $original, $updated);
         return response()->json($educator, 200);
     }
 
@@ -54,13 +55,13 @@ class EducatorController extends Controller
 
     function validateRequest(Request $request, bool $forCreate = true) {
         $this->validate($request, [
-            'centre_id' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email'
         ]);
         if ($forCreate) {
             $this->validate($request, [
+                'centre_id' => 'required',
                 'email' => 'unique_with:educators,deleted'
             ]);
         }

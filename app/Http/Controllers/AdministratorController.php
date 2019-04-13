@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Administrator;
+use App\Utilities\PasswordUtilities;
 use Illuminate\Http\Request;
 
 class AdministratorController extends Controller
@@ -25,14 +26,14 @@ class AdministratorController extends Controller
 
     public function create(Request $request) {
         $this->validateRequest($request);
-        $administrator = Administrator::create($request->all());
+        $administrator = Administrator::create(PasswordUtilities::preparePasswordField($request->all()));
         return response()->json($administrator, 201);
     }
 
     public function update($id, Request $request) {
         $this->validateRequest($request, false);
         $administrator = Administrator::findOrFail($id);
-        $administrator->update($request->all());
+        $administrator->update(PasswordUtilities::preparePasswordField($request->all()));
         return response()->json($administrator, 200);
     }
 
@@ -43,13 +44,13 @@ class AdministratorController extends Controller
 
     function validateRequest(Request $request, bool $forCreate = true) {
         $this->validate($request, [
-            'centre_id' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email'
         ]);
         if ($forCreate) {
             $this->validate($request, [
+                'centre_id' => 'required',
                 'email' => 'unique_with:administrators,deleted'
             ]);
         }
