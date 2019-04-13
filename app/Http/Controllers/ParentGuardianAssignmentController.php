@@ -35,6 +35,22 @@ class ParentGuardianAssignmentController extends Controller
         return $childController->getAllByIds(implode(',',$ids));
     }
 
+    public function getObservationsByAssignedParentGuardian($id) {
+        $encodedResult  = json_encode(ParentGuardianAssignment::where(['parentguardian_id' => $id])->get());
+        $arrayResult = json_decode($encodedResult, true);
+        $ids = array_column($arrayResult, 'child_id');
+        $observationController = new ObservationController();
+        return $observationController->getAllByChildIds(implode(',',$ids));
+    }
+
+    public function getTeachingPlansByAssignedParentGuardian($id) {
+        $encodedResult  = json_encode(ParentGuardianAssignment::where(['parentguardian_id' => $id])->get());
+        $arrayResult = json_decode($encodedResult, true);
+        $ids = array_column($arrayResult, 'child_id');
+        $teachingPlanController = new TeachingPlanController();
+        return $teachingPlanController->getAllByChildIds(implode(',',$ids));
+    }
+
     public function setByParentGuardian(Request $request) {
         ParentGuardianAssignment::where(['parentguardian_id' => (int)$request['id']])->delete();
         foreach ($request->all() as $current) {

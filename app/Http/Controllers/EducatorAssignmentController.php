@@ -34,6 +34,22 @@ class EducatorAssignmentController extends Controller
         $ids = array_column($arrayResult, 'child_id');
         $childController = new ChildController();
         return $childController->getAllByIds(implode(',',$ids));
+    }    
+
+    public function getObservationsByAssignedEducator($id) {
+        $encodedResult  = json_encode(EducatorAssignment::where(['educator_id' => $id])->get());
+        $arrayResult = json_decode($encodedResult, true);
+        $ids = array_column($arrayResult, 'child_id');
+        $observationController = new ObservationController();
+        return $observationController->getAllByChildIds(implode(',',$ids));
+    }
+
+    public function getTeachingPlansByAssignedEducator($id) {
+        $encodedResult  = json_encode(EducatorAssignment::where(['educator_id' => $id])->get());
+        $arrayResult = json_decode($encodedResult, true);
+        $ids = array_column($arrayResult, 'child_id');
+        $teachingPlanController = new TeachingPlanController();
+        return $teachingPlanController->getAllByChildIds(implode(',',$ids));
     }
 
     public function setByEducator(Request $request) {

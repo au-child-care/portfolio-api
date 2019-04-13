@@ -15,6 +15,24 @@ class ObservationController extends Controller
                 ->orderBy('date_tracked', 'desc')
                 ->get());
     }
+    
+    public function getAllByChildIds($ids) {
+        return response()->json(
+            Observation::wherein('child_id', array_map('intval', explode(',', $ids)))
+                ->where(['deleted' => 0])
+                ->orderBy('date_tracked', 'desc')
+                ->get());
+    }
+    
+    public function getAllByEducatorId($id) {
+        return response()->json(
+            Observation::where([
+                    'deleted' => 0,
+                    'educator_id' => $id
+                ])
+                ->orderBy('date_tracked', 'desc')
+                ->get());
+    }
 
     public function get($id) {
         return response()->json(Observation::find($id));

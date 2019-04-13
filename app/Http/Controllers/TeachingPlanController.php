@@ -14,6 +14,24 @@ class TeachingPlanController extends Controller
                 ->orderBy('target_date', 'desc')
                 ->get());
     }
+    
+    public function getAllByChildIds($ids) {
+        return response()->json(
+            TeachingPlan::wherein('child_id', array_map('intval', explode(',', $ids)))
+                ->where(['deleted' => 0])
+                ->orderBy('target_date', 'desc')
+                ->get());
+    }
+    
+    public function getAllByEducatorId($id) {
+        return response()->json(
+            TeachingPlan::where([
+                    'deleted' => 0,
+                    'educator_id' => $id
+                ])
+                ->orderBy('target_date', 'desc')
+                ->get());
+    }
 
     public function get($id) {
         return response()->json(TeachingPlan::find($id));
