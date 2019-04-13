@@ -11,6 +11,7 @@ class AdministratorController extends Controller
         $deleted = $request['deleted'] ?? 0;
         return response()->json(
             Administrator::where(['deleted' => (int)$deleted])
+                ->orderBy('first_name', 'asc')
                 ->get());
     }
 

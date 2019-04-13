@@ -11,6 +11,7 @@ class ChildController extends Controller
         $deleted = $request['deleted'] ?? 0;
         return response()->json(
             Child::where(['deleted' => (int)$deleted])
+                ->orderBy('first_name', 'asc')
                 ->get());
     }
 
@@ -19,7 +20,10 @@ class ChildController extends Controller
     }
 
     public function getAllByIds($ids) {
-        return response()->json(Child::findMany(array_map('intval', explode(',', $ids))));
+        return response()->json(
+            Child::findMany(array_map('intval', explode(',', $ids)))
+                ->sortBy('first_name')
+                ->values()->all());
     }
 
     public function create(Request $request) {

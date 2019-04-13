@@ -10,7 +10,8 @@ class EducatorController extends Controller
     public function getAll(Request $request) {
         $deleted = $request['deleted'] ?? 0;
         return response()->json(
-            Educator::where(['deleted' => (int)$deleted])
+            Educator::where(['deleted' => (int)$deleted])            
+                ->orderBy('first_name', 'asc')
                 ->get());
     }
 
@@ -19,7 +20,9 @@ class EducatorController extends Controller
     }
 
     public function getAllByIds($ids) {
-        return response()->json(Educator::findMany(array_map('intval', explode(',', $ids))));
+        return response()->json(Educator::findMany(array_map('intval', explode(',', $ids)))
+            ->sortBy('first_name')
+            ->values()->all());
     }
 
     public function create(Request $request) {
