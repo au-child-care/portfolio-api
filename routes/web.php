@@ -27,6 +27,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->delete('administrator/{id}', ['uses' => 'AdministratorController@delete']);  
     $router->put('administrator/{id}', ['uses' => 'AdministratorController@update']);
 
+    // Centre routes
+    $router->get('centre',  ['uses' => 'CentreController@getAll']); 
+    $router->get('centre/{id}', ['uses' => 'CentreController@get']);  
+    $router->post('centre', ['uses' => 'CentreController@create']);  
+    $router->delete('centre/{id}', ['uses' => 'CentreController@delete']);  
+    $router->put('centre/{id}', ['uses' => 'CentreController@update']);
+
     // Child routes
     $router->get('child',  ['uses' => 'ChildController@getAll']); 
     $router->get('child/{id}', ['uses' => 'ChildController@get']);  
