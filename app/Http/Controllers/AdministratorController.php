@@ -51,7 +51,9 @@ class AdministratorController extends Controller
         if ($forCreate) {
             $this->validate($request, [
                 'centre_id' => 'required',
-                'email' => 'unique_with:administrators,deleted'
+                'email' => 'unique_with:administrators,centre_id,deleted'
+            ], [
+                'unique_with' => ':attribute already exists.'
             ]);
         }
     }

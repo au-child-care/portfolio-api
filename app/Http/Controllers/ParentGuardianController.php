@@ -62,7 +62,9 @@ class ParentGuardianController extends Controller
         if ($forCreate) {
             $this->validate($request, [
                 'centre_id' => 'required',
-                'email' => 'unique_with:parents_guardians,deleted'
+                'email' => 'unique_with:parents_guardians,centre_id,deleted'
+            ], [
+                'unique_with' => ':attribute already exists.'
             ]);
         }
     }
