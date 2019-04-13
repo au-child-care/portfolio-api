@@ -14,6 +14,7 @@ class StatisticsEducator extends Model
      */
     protected $fillable = [
         'educator_id',
+        'centre_id',
         'total_milestones',
         'total_observations',
         'total_observations_unpublished',

@@ -9,8 +9,12 @@ class EducatorController extends Controller
 {
     public function getAll(Request $request) {
         $deleted = $request['deleted'] ?? 0;
+        $centre_id = $request['centre_id'] ?? 0;
         return response()->json(
-            Educator::where(['deleted' => (int)$deleted])            
+            Educator::where([
+                    'deleted' => (int)$deleted,
+                    'centre_id' => (int)$centre_id
+                ])     
                 ->orderBy('first_name', 'asc')
                 ->get());
     }
@@ -29,7 +33,7 @@ class EducatorController extends Controller
         $this->validateRequest($request);
         $requestArray = $request->all();
         $educator = Educator::create($requestArray);
-        $this->updateStats(null, $requestArray);
+        $this->updateStats($requestArray['centre_id'], null, $requestArray);
         return response()->json($educator, 201);
     }
 
@@ -39,7 +43,7 @@ class EducatorController extends Controller
         $original = $educator->toArray();
         $updated = $request->all();
         $educator->update($updated);
-        $this->updateStats($original, $updated);
+        $this->updateStats($updated['centre_id'], $original, $updated);
         return response()->json($educator, 200);
     }
 
@@ -50,6 +54,7 @@ class EducatorController extends Controller
 
     function validateRequest(Request $request, bool $forCreate = true) {
         $this->validate($request, [
+            'centre_id' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email'
@@ -61,9 +66,9 @@ class EducatorController extends Controller
         }
     }
 
-    function updateStats($original, $updated) {
+    function updateStats($centre_id, $original, $updated) {
         if ($original) {
-            StatisticsAllController::updateStats(array(
+            StatisticsAllController::updateStats($centre_id, array(
                 'total_educators' => -1,
                 'last_update_mode' => 'Event',
                 'date_modified' => array_key_exists('date_modified', $updated) ? $updated['date_modified'] : date('Y-m-d H:i:s')
@@ -72,7 +77,7 @@ class EducatorController extends Controller
 
         if (array_key_exists('deleted', $updated) && $updated['deleted'] == 0)
         {
-            StatisticsAllController::updateStats(array(
+            StatisticsAllController::updateStats($centre_id, array(
                 'total_educators' => 1,
                 'last_update_mode' => 'Event',
                 'date_modified' => array_key_exists('date_modified', $updated) ? $updated['date_modified'] : date('Y-m-d H:i:s')

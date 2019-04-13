@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Child;
 use App\Models\TeachingPlan;
 use Illuminate\Http\Request;
 
@@ -9,8 +10,15 @@ class TeachingPlanController extends Controller
 {
     public function getAll(Request $request) {
         $deleted = $request['deleted'] ?? 0;
+        $centre_id = $request['centre_id'] ?? 0;
+
+        $encodedResult  = json_encode(Child::where(['centre_id' => $centre_id])->get());
+        $arrayResult = json_decode($encodedResult, true);
+        $ids = array_column($arrayResult, 'id');
+
         return response()->json(
-            TeachingPlan::where(['deleted' => (int)$deleted])
+            TeachingPlan::wherein('child_id', $ids)
+                ->where(['deleted' => (int)$deleted])
                 ->orderBy('target_date', 'desc')
                 ->get());
     }
@@ -41,7 +49,10 @@ class TeachingPlanController extends Controller
         $this->validateRequest($request);
         $requestArray = $request->all();
         $teachingPlan = TeachingPlan::create($requestArray);
-        $this->updateStats(null, $requestArray);
+        
+        $child = Child::find((int)$request['child_id']);
+
+        $this->updateStats($child['centre_id'], null, $requestArray);
         return response()->json($teachingPlan, 201);
     }
 
@@ -51,7 +62,10 @@ class TeachingPlanController extends Controller
         $original = $teachingPlan->toArray();
         $updated = $request->all();
         $teachingPlan->update($updated);
-        $this->updateStats($original, $updated);
+        
+        $child = Child::find((int)$request['child_id']);
+
+        $this->updateStats($child['centre_id'], $original, $updated);
         return response()->json($teachingPlan, 200);
     }
 
@@ -71,7 +85,7 @@ class TeachingPlanController extends Controller
         ]);
     }
 
-    function updateStats($original, $updated) {
+    function updateStats($centre_id, $original, $updated) {
         if ($original) {
             $updatePayload = array(
                 'total_itps' => -1,
@@ -80,7 +94,7 @@ class TeachingPlanController extends Controller
                 'date_modified' => $updated['date_modified']
             );
 
-            StatisticsAllController::updateStats($updatePayload);
+            StatisticsAllController::updateStats($centre_id, $updatePayload);
             StatisticsChildController::updateStats($original['child_id'], $updatePayload); 
             StatisticsEducatorController::updateStats($updated['educator_id'], $updatePayload); 
         }
@@ -94,7 +108,7 @@ class TeachingPlanController extends Controller
                 'date_modified' => $updated['date_modified']
             );
 
-            StatisticsAllController::updateStats($updatePayload);
+            StatisticsAllController::updateStats($centre_id, $updatePayload);
             StatisticsChildController::updateStats($updated['child_id'], $updatePayload); 
             StatisticsEducatorController::updateStats($updated['educator_id'], $updatePayload); 
         }

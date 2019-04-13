@@ -9,8 +9,12 @@ class ParentGuardianController extends Controller
 {
     public function getAll(Request $request) {
         $deleted = $request['deleted'] ?? 0;
+        $centre_id = $request['centre_id'] ?? 0;
         return response()->json(
-            ParentGuardian::where(['deleted' => (int)$deleted])            
+            ParentGuardian::where([
+                    'deleted' => (int)$deleted,
+                    'centre_id' => (int)$centre_id
+                ])
                 ->orderBy('first_name', 'asc')
                 ->get());
     }
@@ -29,7 +33,7 @@ class ParentGuardianController extends Controller
         $this->validateRequest($request);
         $requestArray = $request->all();
         $parentGuardian = ParentGuardian::create($requestArray);
-        $this->updateStats(null, $requestArray);
+        $this->updateStats($requestArray['centre_id'], null, $requestArray);
         return response()->json($parentGuardian, 201);
     }
 
@@ -39,7 +43,7 @@ class ParentGuardianController extends Controller
         $original = $parentGuardian->toArray();
         $updated = $request->all();
         $parentGuardian->update($updated);
-        $this->updateStats($original, $updated);
+        $this->updateStats($updated['centre_id'], $original, $updated);
         return response()->json($parentGuardian, 200);
     }
 
@@ -50,6 +54,7 @@ class ParentGuardianController extends Controller
 
     function validateRequest(Request $request, bool $forCreate = true) {
         $this->validate($request, [
+            'centre_id' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email'
@@ -61,9 +66,9 @@ class ParentGuardianController extends Controller
         }
     }
 
-    function updateStats($original, $updated) {
+    function updateStats($centre_id, $original, $updated) {
         if ($original) {
-            StatisticsAllController::updateStats(array(
+            StatisticsAllController::updateStats($centre_id, array(
                 'total_parents_guardians' => -1,
                 'total_parents' => $original['type'] == 'Parent' ? -1 : 0,
                 'total_guardians' => $original['type'] == 'Guardian' ? -1 : 0,
@@ -74,7 +79,7 @@ class ParentGuardianController extends Controller
 
         if (array_key_exists('deleted', $updated) && $updated['deleted'] == 0)
         {
-            StatisticsAllController::updateStats(array(
+            StatisticsAllController::updateStats($centre_id, array(
                 'total_parents_guardians' => 1,
                 'total_parents' => $updated['type'] == 'Parent' ? 1 : 0,
                 'total_guardians' => $updated['type'] == 'Guardian' ? 1 : 0,

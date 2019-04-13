@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Child;
 use App\Models\Observation;
 use App\Services\ObservationClassifier;
 use Illuminate\Http\Request;
@@ -10,8 +11,15 @@ class ObservationController extends Controller
 {
     public function getAll(Request $request) {
         $deleted = $request['deleted'] ?? 0;
+        $centre_id = $request['centre_id'] ?? 0;
+
+        $encodedResult  = json_encode(Child::where(['centre_id' => $centre_id])->get());
+        $arrayResult = json_decode($encodedResult, true);
+        $ids = array_column($arrayResult, 'id');
+
         return response()->json(
-            Observation::where(['deleted' => (int)$deleted])
+            Observation::wherein('child_id', $ids)
+                ->where(['deleted' => (int)$deleted])
                 ->orderBy('date_tracked', 'desc')
                 ->get());
     }
@@ -42,7 +50,10 @@ class ObservationController extends Controller
         $this->validateRequest($request);
         $requestArray = $request->all();
         $observation = Observation::create($requestArray);
-        $this->updateStats(null, $requestArray);
+        
+        $child = Child::find((int)$request['child_id']);
+
+        $this->updateStats($child['centre_id'], null, $requestArray);
         return response()->json($observation, 201);
     }
 
@@ -52,7 +63,10 @@ class ObservationController extends Controller
         $original = $observation->toArray();
         $updated = $request->all();
         $observation->update($updated);
-        $this->updateStats($original, $updated);
+        
+        $child = Child::find((int)$request['child_id']);
+
+        $this->updateStats($child['centre_id'], $original, $updated);
         return response()->json($observation, 200);
     }
 
@@ -77,7 +91,7 @@ class ObservationController extends Controller
         ]);
     }
 
-    function updateStats($original, $updated) {
+    function updateStats($centre_id, $original, $updated) {
         if ($original) {
             $updatePayload = array(
                 'total_observations' => -1,
@@ -85,7 +99,7 @@ class ObservationController extends Controller
                 'date_modified' => $updated['date_modified']
             );
 
-            StatisticsAllController::updateStats($updatePayload);
+            StatisticsAllController::updateStats($centre_id, $updatePayload);
 
             $updatePayload['total_observations_outcome1'] = $original['outcome_id'] == '1' ? -1 : 0;
             $updatePayload['total_observations_outcome2'] = $original['outcome_id'] == '2' ? -1 : 0;
@@ -108,7 +122,7 @@ class ObservationController extends Controller
                 'date_modified' => $updated['date_modified']
             );
 
-            StatisticsAllController::updateStats($updatePayload);
+            StatisticsAllController::updateStats($centre_id, $updatePayload);
 
             $updatePayload['total_observations_outcome1'] = $updated['outcome_id'] == '1' ? 1 : 0;
             $updatePayload['total_observations_outcome2'] = $updated['outcome_id'] == '2' ? 1 : 0;

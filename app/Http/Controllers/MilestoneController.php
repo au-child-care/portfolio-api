@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Child;
 use App\Models\Milestone;
 use Illuminate\Http\Request;
 
@@ -22,12 +23,14 @@ class MilestoneController extends Controller
             Milestone::create($current);
         }
 
-        $this->updateStats($original, $updated);
+        $child = Child::find((int)$request['id']);
+
+        $this->updateStats($child['centre_id'], $original, $updated);
 
         return response()->json('Milestones were successfully set.', 200);
     }
 
-    function updateStats($original, $updated) {
+    function updateStats($centre_id, $original, $updated) {
         if ($original) {
             $updatePayload = array(
                 'total_milestones' => sizeof($original) * -1,
@@ -35,7 +38,7 @@ class MilestoneController extends Controller
                 'date_modified' => date("Y-m-d H:i:s")
             );
 
-            StatisticsAllController::updateStats($updatePayload);
+            StatisticsAllController::updateStats($centre_id, $updatePayload);
 
             if (sizeof($original) > 0) {
                 $milestonesCount = array_count_values(array_column($original, 'developmental_area'));
@@ -78,7 +81,7 @@ class MilestoneController extends Controller
                 'date_modified' => date("Y-m-d H:i:s")
             );
 
-            StatisticsAllController::updateStats($updatePayload);
+            StatisticsAllController::updateStats($centre_id, $updatePayload);
 
             if (sizeof($updated) > 0) {
                 $milestonesCount = array_count_values(array_column($updated, 'developmental_area'));

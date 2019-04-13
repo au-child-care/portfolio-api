@@ -14,6 +14,7 @@ class StatisticsEducatorTracking extends Model
      */
     protected $fillable = [
         'educator_id',
+        'centre_id',
         'name',
         'groups_handled',
         'total_children',

@@ -114,9 +114,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->put('teachingPlan/{id}', ['uses' => 'TeachingPlanController@update']);
 
     // Statistics routes
-    $router->post('statistics',  ['uses' => 'StatisticsController@update']); 
-    $router->get('statistics/all',  ['uses' => 'StatisticsAllController@get']); 
-    $router->put('statistics/all', ['uses' => 'StatisticsAllController@update']);
+    $router->post('statistics',  ['uses' => 'StatisticsController@updateAll']); 
+    $router->post('statistics/{centre_id}',  ['uses' => 'StatisticsController@update']); 
+    $router->get('statistics/all/{centre_id}',  ['uses' => 'StatisticsAllController@get']); 
+    $router->put('statistics/all/{centre_id}', ['uses' => 'StatisticsAllController@update']);
     $router->get('statistics/child/{child_id}',  ['uses' => 'StatisticsChildController@get']); 
     $router->put('statistics/child/{child_id}', ['uses' => 'StatisticsChildController@update']);
     $router->get('statistics/child/milestones-pending/{ids}',  ['uses' => 'StatisticsChildController@getMilestonesPending']); 
@@ -125,6 +126,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('statistics/educator/{educator_id}',  ['uses' => 'StatisticsEducatorController@get']); 
     $router->put('statistics/educator/{educator_id}', ['uses' => 'StatisticsEducatorController@update']);
     $router->get('statistics/educator/{educator_id}/children', ['uses' => 'StatisticsEducatorController@getAssignedChildrenStats']);
-    $router->get('statistics/educator/tracking/all',  ['uses' => 'StatisticsEducatorController@getAllTracking']);
+    $router->get('statistics/educator/tracking/all/{centre_id}',  ['uses' => 'StatisticsEducatorController@getAllTracking']);
     $router->get('statistics/educator/tracking/{educator_id}',  ['uses' => 'StatisticsEducatorController@getTracking']);  
   });

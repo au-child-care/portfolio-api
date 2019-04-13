@@ -13,6 +13,7 @@ class StatisticsAll extends Model
      * @var array
      */
     protected $fillable = [
+        'centre_id',
         'total_milestones',
         'total_observations',
         'total_itps',
@@ -39,6 +40,8 @@ class StatisticsAll extends Model
     protected $hidden = [ ];
     
     protected $table = 'stats_all';
+
+    protected $primaryKey = 'centre_id';
 
     public $timestamps = false;
 }

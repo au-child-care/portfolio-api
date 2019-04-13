@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Administrator extends Model
+class Centre extends Model
 {
 
     /**
@@ -13,7 +13,7 @@ class Administrator extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'nickname', 'email', 'contact_number', 'password', 'active', 'deleted', 'date_created', 'date_modified'
+        'centre_code', 'name', 'address', 'contact_name', 'contact_email', 'contact_number', 'active', 'date_created', 'date_modified'
     ];
 
     /**
@@ -21,5 +21,7 @@ class Administrator extends Model
      *
      * @var array
      */
-    protected $hidden = [ 'password' ];
+    protected $hidden = [ ];
+
+    public $timestamps = false;
 }

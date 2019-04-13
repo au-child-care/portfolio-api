@@ -9,8 +9,12 @@ class ChildController extends Controller
 {
     public function getAll(Request $request) {
         $deleted = $request['deleted'] ?? 0;
+        $centre_id = $request['centre_id'] ?? 0;
         return response()->json(
-            Child::where(['deleted' => (int)$deleted])
+            Child::where([
+                    'deleted' => (int)$deleted,
+                    'centre_id' => (int)$centre_id
+                ])
                 ->orderBy('first_name', 'asc')
                 ->get());
     }
@@ -30,7 +34,7 @@ class ChildController extends Controller
         $this->validateRequest($request);
         $requestArray = $request->all();
         $child = Child::create($requestArray);
-        $this->updateStats(null, $requestArray);
+        $this->updateStats($requestArray['centre_id'], null, $requestArray);
         return response()->json($child, 201);
     }
 
@@ -40,7 +44,7 @@ class ChildController extends Controller
         $original = $child->toArray();
         $updated = $request->all();
         $child->update($updated);
-        $this->updateStats($original, $updated);
+        $this->updateStats($updated['centre_id'], $original, $updated);
         return response()->json($child, 200);
     }
 
@@ -51,6 +55,7 @@ class ChildController extends Controller
 
     function validateRequest(Request $request) {
         $this->validate($request, [
+            'centre_id' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'birthday' => 'required',
@@ -58,9 +63,9 @@ class ChildController extends Controller
         ]);
     }
 
-    function updateStats($original, $updated) {
+    function updateStats($centre_id, $original, $updated) {
         if ($original) {
-            StatisticsAllController::updateStats(array(
+            StatisticsAllController::updateStats($centre_id, array(
                 'total_children' => -1,
                 'total_babies' => $original['group'] == 'Babies' ? -1 : 0,
                 'total_senior_babies' => $original['group'] == 'Senior Babies' ? -1 : 0,
@@ -74,7 +79,7 @@ class ChildController extends Controller
 
         if ($updated['deleted'] == 0)
         {
-            StatisticsAllController::updateStats(array(
+            StatisticsAllController::updateStats($centre_id, array(
                 'total_children' => 1,
                 'total_babies' => $updated['group'] == 'Babies' ? 1 : 0,
                 'total_senior_babies' => $updated['group'] == 'Senior Babies' ? 1 : 0,

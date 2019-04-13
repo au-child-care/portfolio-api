@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
+use App\Models\Educator;
 use App\Models\EducatorAssignment;
 use App\Models\StatisticsChild;
 use App\Models\StatisticsChildMilestonesPending;
@@ -22,8 +23,14 @@ class StatisticsEducatorController extends Controller
         return response()->json(StatisticsEducatorTracking::find($educator_id));
     }
 
-    public function getAllTracking() {
-        return response()->json(StatisticsEducatorTracking::all());
+    public function getAllTracking($centre_id) {
+        $encodedResult = json_encode(Educator::where([
+            'deleted' => 0,
+            'centre_id' => $centre_id
+        ])->get());
+        $arrayResult = json_decode($encodedResult, true);
+        $ids = array_column($arrayResult, 'id');
+        return response()->json(StatisticsEducatorTracking::findMany(array_map('intval', $ids)));
     }
 
     public function getAssignedChildrenStats($educator_id) {        

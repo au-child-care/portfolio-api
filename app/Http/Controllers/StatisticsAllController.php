@@ -8,26 +8,25 @@ use Illuminate\Http\Request;
 
 class StatisticsAllController extends Controller
 {
-    public function get() {
-        return response()->json(StatisticsAllController::getRecord());
+    public function get($centre_id) {
+        return response()->json(StatisticsAllController::getRecord($centre_id));
     }
 
-    public function update(Request $request) {
-        $updatedRecord = StatisticsAllController::updateStats($request->all());
+    public function update($centre_id, Request $request) {
+        $updatedRecord = StatisticsAllController::updateStats($centre_id, $request->all());
         return response()->json($updatedRecord, 200);
     }
 
-    static function getRecord() {
-        $record = StatisticsAll::first();
+    static function getRecord($centre_id) {
+        $record = StatisticsAll::find($centre_id);
         if (!$record) {
-            StatisticsAll::create();
-            $record = StatisticsAll::first();
+            $record = StatisticsAll::create(array('centre_id' => $centre_id));
         }
         return $record;
     }
 
-    public static function updateStats($request) {
-        $record = StatisticsAllController::getRecord();
+    public static function updateStats($centre_id, $request) {
+        $record = StatisticsAllController::getRecord($centre_id);
         foreach(array_keys($request) as $key) {
             if ($key == 'last_update_mode' || $key == 'date_modified') {
                 $record[$key] = $request[$key];

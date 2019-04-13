@@ -9,8 +9,12 @@ class AdministratorController extends Controller
 {
     public function getAll(Request $request) {
         $deleted = $request['deleted'] ?? 0;
+        $centre_id = $request['centre_id'] ?? 0;
         return response()->json(
-            Administrator::where(['deleted' => (int)$deleted])
+            Administrator::where([
+                    'deleted' => (int)$deleted,
+                    'centre_id' => (int)$centre_id
+                ])
                 ->orderBy('first_name', 'asc')
                 ->get());
     }
@@ -39,6 +43,7 @@ class AdministratorController extends Controller
 
     function validateRequest(Request $request, bool $forCreate = true) {
         $this->validate($request, [
+            'centre_id' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email'
