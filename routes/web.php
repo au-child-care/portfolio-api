@@ -15,7 +15,7 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['prefix' => 'api'], function () use ($router) {
+$router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
     // Account routes
     $router->post('account/authenticate',  ['uses' => 'AccountController@authenticate']); 
     $router->put('account/update/{role}',  ['uses' => 'AccountController@update']); 
