@@ -236,7 +236,10 @@ class StatisticsController extends Controller
 
     private function updateAllStats($centre_id) {
         // Cleanup all statistics table
-        StatisticsAll::find($centre_id)->delete();
+        $centreStats = StatisticsAll::find($centre_id);
+        if ($centreStats != null) {
+            $centreStats->delete();
+        }
 
         $centre = Centre::find($centre_id);
 
