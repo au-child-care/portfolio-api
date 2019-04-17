@@ -21,7 +21,7 @@ class ObservationClassifier {
     }
 
     public function Classify($observation) {
-        $dataset = new CsvDataset(__DIR__ . '../../../resources/datasets/observations.csv', 1);
+        $dataset = new CsvDataset(__DIR__ . '/datasets/observations.csv', 1);
         
         $samples = [];
         foreach ($dataset->getSamples() as $sample) {
