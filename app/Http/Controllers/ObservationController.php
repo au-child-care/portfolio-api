@@ -86,6 +86,7 @@ class ObservationController extends Controller
             'educator_id' => 'required',
             'child_id' => 'required',
             'observation' => 'required',
+            'assessment' => 'required',
             'outcome_id' => 'required',
             'date_tracked' => 'required'
         ]);
