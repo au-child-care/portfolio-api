@@ -27,11 +27,11 @@ class StatisticsEducator extends Model
         'total_milestones_cognitive',
         'total_milestones_language',
         'total_milestones_seek_advice',
-        'total_observation_outcome1',
-        'total_observation_outcome2',
-        'total_observation_outcome3',
-        'total_observation_outcome4',
-        'total_observation_outcome5',
+        'total_observations_outcome1',
+        'total_observations_outcome2',
+        'total_observations_outcome3',
+        'total_observations_outcome4',
+        'total_observations_outcome5',
         'last_update_mode',
         'date_modified'
     ];

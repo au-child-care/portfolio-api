@@ -11,6 +11,7 @@ class MilestoneController extends Controller
     public function getByChild($id) {
         return response()->json(
             Milestone::where(['child_id' => $id])
+                ->orderBy('date_tracked', 'desc')
                 ->get());
     }
 
